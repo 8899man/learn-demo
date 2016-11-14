@@ -1,0 +1,49 @@
+#jnImageroll {
+	float: left;
+	height: 320px;
+	margin: 0 11px 0 0;
+	overflow: hidden;
+	position: relative;
+	width: 550px;
+}
+#jnImageroll img {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+#jnImageroll div {
+	bottom: 0;
+	overflow: hidden;
+	position: absolute;
+	float: left;
+}
+#jnImageroll div a {
+	background-color: #444;
+	color: #fff;
+	display: inline-block;
+	float: left;
+	height: 32px;
+	margin-right: 1px;
+	overflow: hidden;
+	padding: 5px 15px;
+	width: 79px;
+	text-align: center;
+}
+#jnImageroll div a:hover {
+	text-decoration: none;
+}
+#jnImageroll div a em {
+	cursor: pointer;
+	display: block;
+	height: 16px;
+	overflow: hidden;
+	width: 79px;
+}
+#jnImageroll .last {
+	margin: 0;
+	width: 80px;
+}
+#jnImageroll a.chos {
+	background: url("images/adindex.gif") no-repeat center 39px #37a7d7;
+	color: #fff;
+}
