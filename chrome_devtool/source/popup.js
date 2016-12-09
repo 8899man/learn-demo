@@ -1,6 +1,12 @@
+var extension;
 // 关闭菜单
 function closePopup(){
  window.close();
+}
+// 打开选项页
+function openOptions(){
+ closePopup();
+ window.open('chrome-extension://cnihlhefojebepdflppnooehncmbcgjm/options.html');
 }
 
 $(function(){
@@ -20,7 +26,7 @@ $(function(){
 			});
 			chrome.tabs.executeScript(null,{code:"var status = " + count + ";"});	
 			chrome.tabs.executeScript({
-			  file: 'task.js'
+			  file: 'demo2.js'
 			});
 			// chrome.tabs.executeScript(null,{code:"window.location.reload();"});
 			setInterval(function(){	
@@ -30,22 +36,22 @@ $(function(){
 					});
 					chrome.tabs.executeScript(null,{code:"var status = " + count + ";"});	
 					chrome.tabs.executeScript({
-					  file: 'task.js'
+					  file: 'demo2.js'
 					});
 				});
-			},5015000);
+			},400000);
 	  } else {
 	  	chrome.tabs.executeScript(null,{code:"window.location.reload();"});
 	  }
 	});
-
 	$('#btn-stop').click(function(){
 	  chrome.tabs.executeScript({
-	    file: 'stopTask.js'
+	    file: 'stopTask2.js'
 	  });
 	  closePopup();
 	});
 
+	$('#options').click(openOptions);
 });
 
 

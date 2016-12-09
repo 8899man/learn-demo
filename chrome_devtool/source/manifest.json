@@ -2,7 +2,7 @@
   "name": "Gold Digger",
   "manifest_version": 2,
   "version": "1.0",
-  "description": "is powerful.",
+  "description": "Digger whatsapp",
   "icons": { 
     "16": "icon16.png",             
     "48": "icon48.png",            
@@ -12,7 +12,8 @@
     "activeTab",
     "http://115.28.56.197/",
     "http://10.2.227.118/",
-    "http://120.27.42.144/"
+    "http://120.27.42.144/",
+    "https://web.whatsapp.com/"
   ],
   "browser_action": {
     "default_title": "My prey is near",
