@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      body {
+        overflow: hidden;
+        margin: 0px;
+        padding: 0px;
+        color: #345;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+        direction: ltr;
+        text-align: left;
+        visibility: visible;
+      }
+      #menu {
+        margin: 4px 0;
+      }
+      #menu .separator {
+        height: 0;
+        margin: 3px 2px;
+        border: 0;
+        border-top: 1px solid #ddd;
+      }
+      #menu .item {
+        padding: 4px 15px;
+        margin: 4px 6px;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 14px;
+        border: 1px solid #fff;
+      }
+      #menu .item:hover {
+        border: 1px solid #bcd;
+        border-radius: 3px;
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), color-stop(0.4, hsl(215, 67%, 97%)), color-stop(0.41, hsl(213, 48%, 95%)));
+      }
+      #menu #count {
+        color: #f30;
+        font-size: 16px;
+        background-color: #eee;
+        cursor: text;
+      }
+      #count input {
+        width: 30px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        text-align: center;
+        color: green;
+        font-size: 16px;
+      }
+      #btn-start {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="menu">
+      <div id="count" class="item">第<input type="text">次链接抓取(*)</div>
+      <div id="btn-start" class="item">Start</div>
+      <div id="btn-stop" class="item">Stop</div>
+    </div>
+
+   <script src="jquery.min.js"></script>
+   <script src="popup.js"></script>
+  </body>
+</html>
