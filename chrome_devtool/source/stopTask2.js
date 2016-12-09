@@ -1,5 +1,4 @@
 /* 绝密 TOP SECRET, COPYRIGHT © AFMOBI GROUP */
-
 clearTimeout(t_timeout);
 
 var lastInfo = '请等待剩余' + linksArray.length + '条链接运行完毕...';

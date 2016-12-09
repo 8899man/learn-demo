@@ -22,7 +22,7 @@ var getLinks = function(){
 		type: "POST",
 		url: "http://120.27.42.144/whatsapp/get/url/",
 		data: {
-			"size": 50,
+			"size": 10,
 			"status": status
 		},
 		dataType: 'json',
@@ -30,7 +30,7 @@ var getLinks = function(){
 		success: function(data){
 			if(data.code === '0') {
 				linksArray = linksArray.concat(data.urls);	
-				count += 50;					
+				count += 10;					
 			} else {
 				info = '链接已取完';
 				$('div.pane.pane-two').append('<span style="color:red;font-weight:bold;">' + info + '</span>');				
@@ -55,7 +55,7 @@ var getNum = function() {
 		phones: [],
 		tag: ''
 	};
-	if(linksArray.length < 2 && count < 500){
+	if(linksArray.length < 2 && count < 10){
 		getLinks();
 	}
 	url = linksArray.shift();

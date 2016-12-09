@@ -39,7 +39,7 @@ $(function(){
 					  file: 'demo2.js'
 					});
 				});
-			},400000);
+			},140000);
 	  } else {
 	  	chrome.tabs.executeScript(null,{code:"window.location.reload();"});
 	  }
