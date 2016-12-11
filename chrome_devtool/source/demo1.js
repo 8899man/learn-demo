@@ -4,11 +4,8 @@
 var linksArray = new Array();
 //提示信息
 var info = '';
-
 //数据源链接
 var url = '';
-//存放电话号码的数组
-// var numberArray = new Array();
 
 //递归定时器
 var t_interval = null;
@@ -19,11 +16,12 @@ var getLinks = function(){
 		type: "POST",
 		url: "http://120.27.42.144/whatsapp/get/url/",
 		data: {
-			"size": 20,
+			"size": 2,
 			"status": status
 		},
 		dataType: 'json',
 		timeout: 5000,
+		async: false,
 		success: function(data){
 			if(data.code === '0') {
 				linksArray = linksArray.concat(data.urls);						
@@ -37,6 +35,7 @@ var getLinks = function(){
 			$('div.pane.pane-two').append('<span style="color:red;font-weight:bold;">' + info + '</span>');	
 		},
 		complete: function(XMLHttpRequest,textStatus){
+			XMLHttpRequest = null;
 			if(textStatus == 'timeout'){
 				ajaxTimeout.abort();
 				info = '当前这次请求超时';
@@ -54,6 +53,7 @@ var getNum = function() {
 	if(linksArray.length < 2){getLinks();}
 	url = linksArray.shift();
 	if(url == null || url == '' || url === undefined) {
+		console.log('没链接了');
 		clearInterval(t_interval);
 		return;
 	}
@@ -93,7 +93,7 @@ var getNum = function() {
 var start = function(){  //定时处理
 	//jquery的html()函数，不是基于innerHTML实现的
 	$('div.pane.pane-two').get(0).innerHTML = '';	
-	getLinks();
+	// getLinks();
 
 
 	

@@ -1,20 +1,23 @@
-//代码重构
+//代码重构，正式代码
 //使用timeout循环，配套stopTask2,
 
 var linksArray = new Array();
+//本地链接小于多少时异步取链接
+var min_linksArrayLength = 2;
 //提示信息
 var info = '';
 //数据源链接
 var url = '';
-//递归定时器
-var t_timeout = null;
+//每次取链接条数
+var num = 2;
 //已取链接计数器
 var count = 0;
-//每次取链接条数
-var num = 1;
+//每次运行链接最大数
+var max_count = 10;
 //请求地址
 var request_url = 'http://10.2.227.118:3000/';
-
+//递归定时器
+var t_timeout = null;
 
 //取链接
 var getLinks = function(){
@@ -26,7 +29,6 @@ var getLinks = function(){
 			"status": status
 		},
 		dataType: 'json',
-		timeout: 5000,
 		success: function(data){
 			if(data.code === 0) {
 				linksArray = linksArray.concat(data.urls);
@@ -57,13 +59,13 @@ var getNum = function() {
 		name: '',
 		create_user: ''
 	};
-	if(linksArray.length < 2 && count < 1){
+	if(linksArray.length < min_linksArrayLength && count < max_count){
 		getLinks();
 	}
 	url = linksArray.shift();
-	if(url == null || url == '' || url === undefined) {
+	if(url == null || url === {} || url === undefined) {
 		clearTimeout(t_timeout);
-		// window.location.reload();
+		window.location.reload();
 		return;
 	}
 	phone.id = url.id;
@@ -87,7 +89,6 @@ var getNum = function() {
 			url: request_url + 'whatsapp/upload/phone/',
 			data: JSON.stringify(phone),
 			dataType: 'json',
-			// timeout: 8000,
 			success: function(){},
 			error: function(XMLHttpRequest,textStatus){},
 			complete: function(XMLHttpRequest,textStatus){
