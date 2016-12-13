@@ -6,18 +6,22 @@ var linksArray = new Array();
 var min_linksArrayLength = 2;
 //提示信息
 var info = '';
-//数据源链接
-var url = '';
+//每一条数据源
+var url = null;
 //每次取链接条数
-var num = 2;
+var num = 3;
 //已取链接计数器
 var count = 0;
 //每次运行链接最大数
-var max_count = 10;
+var max_count = 360;
 //请求地址
-var request_url = 'http://10.2.227.118:3000/';
+var request_url = 'http://120.27.42.144/';
+//跑链接时间间隔
+var interval = 10000;
 //递归定时器
 var t_timeout = null;
+//链接已取完标志
+var geturl = 1;
 
 //取链接
 var getLinks = function(){
@@ -36,6 +40,7 @@ var getLinks = function(){
 			} else {
 				info = '链接已取完';
 				$('div.pane.pane-two').append('<span style="color:red;font-weight:bold;">' + info + '</span>');
+				geturl = 0;
 			}
 		},
 		error: function(XMLHttpRequest,textStatus){	
@@ -43,11 +48,11 @@ var getLinks = function(){
 			$('div.pane.pane-two').append('<span style="color:red;font-weight:bold;">' + info + '</span>');	
 		},
 		complete: function(XMLHttpRequest,textStatus){
-			if(textStatus == 'timeout'){
-				ajaxTimeout.abort();
-				info = '当前这次请求超时';
-				$('div.pane.pane-two').append('<span style="color:red;font-weight:bold;">' + info + '</span>');	
-			}
+			// if(textStatus == 'timeout'){
+				// ajaxTimeout.abort();
+				// info = textStatus;
+				// $('div.pane.pane-two').append('<span style="color:red;font-weight:bold;">' + info + '</span>');	
+			// }
 		}
 	});
 };
@@ -55,7 +60,7 @@ var getLinks = function(){
 var getNum = function() {
 	var phone = {
 		phones: [],
-		id: 0,
+		id: null,
 		name: '',
 		create_user: ''
 	};
@@ -63,8 +68,11 @@ var getNum = function() {
 		getLinks();
 	}
 	url = linksArray.shift();
-	if(url == null || url === {} || url === undefined) {
+	if(url == null || typeof(url) === undefined || url === undefined) {
 		clearTimeout(t_timeout);
+		while(geturl === 0) {
+			alert('链接已取完，请刷新浏览器，运行其他状态链接');
+		}
 		window.location.reload();
 		return;
 	}
@@ -93,20 +101,19 @@ var getNum = function() {
 			error: function(XMLHttpRequest,textStatus){},
 			complete: function(XMLHttpRequest,textStatus){
 				console.log('上传电话号码状态：' + textStatus);
-				phone = {};
+				phone = null;
 			}
 		});
 		clearTimeout(k);
 	},8000);
-	t_timeout = setTimeout(getNum,12000);
+	t_timeout = setTimeout(getNum,interval);
 };
 
 var start = function(){  //定时处理
 	//jquery的html()函数，不是基于innerHTML实现的
 	$('div.pane.pane-two').get(0).innerHTML = '';	
 	getLinks();
-	setTimeout(getNum,5000);
+	setTimeout(getNum,6000);
 };
-
 start();
 
