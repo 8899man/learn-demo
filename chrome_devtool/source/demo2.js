@@ -70,7 +70,7 @@ var getNum = function() {
 	url = linksArray.shift();
 	if(url == null || typeof(url) === undefined || url === undefined) {
 		clearTimeout(t_timeout);
-		while(geturl === 0) {
+		if(geturl === 0) {
 			alert('链接已取完，请刷新浏览器，运行其他状态链接');
 		}
 		window.location.reload();
