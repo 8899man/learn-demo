@@ -28,7 +28,6 @@ $(function(){
 			chrome.tabs.executeScript({
 			  file: 'demo2.js'
 			});
-			// chrome.tabs.executeScript(null,{code:"window.location.reload();"});
 			setInterval(function(){	
 				chrome.tabs.query({active:true,currentWindow:true},function(tabs){
 					chrome.tabs.executeScript({

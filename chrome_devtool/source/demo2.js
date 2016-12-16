@@ -9,7 +9,7 @@ var info = '';
 //每一条数据源
 var url = null;
 //每次取链接条数
-var num = 3;
+var num = 60;
 //已取链接计数器
 var count = 0;
 //每次运行链接最大数
