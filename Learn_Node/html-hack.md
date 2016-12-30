@@ -18,13 +18,19 @@ or
 outline: none;
 ```
 
+4、PC上面输入框缓存用户输入，而且选择缓存的内容到输入框后，输入框有黄色背景
+``` html
+<!-- 最简单的做法就是不要自动补全的功能-->
+<input type="text" autocomplete="off">
+```
+
 4、去掉移动端文字选中阴影和选项
 ```
 -webkit-touch-callout: none;
 ```
 
 5、关于PC网页上文本内容默认可以用鼠标选中有蓝色背景，如果不需要可以在css中添加
-``` css
+```
 -moz-user-select: none; /*火狐*/
 -webkit-user-select: none; /*webkit浏览器*/
 -ms-user-select: none; /*IE10*/
@@ -48,3 +54,19 @@ user-select: none;
 </html>
 ```
 在该例子中，利用return false 阻止了黏贴这一行为。在实际应用中，当有一些比较重要的数据时，如手机号、登录密码、网银账号等，为了安全考虑必须手动输入，因此在这些表单文本域，通常是设置为禁止黏贴的。
+
+8、取消手机点击时出现的灰块
+``` html
+html,body {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+a,div {
+    -webkit-tap-highlight-color: transparent; 
+    -moz-tap-highlight-color: transparent; 
+    -ms-tap-highlight-color: transparent; 
+    -o-tap-highlight-color: transparent; 
+    tap-highlight-color: transparent;
+}
+```
+
