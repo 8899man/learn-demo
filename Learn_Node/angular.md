@@ -99,6 +99,8 @@ ng-repeat 指令对于集合中(数组中)的每个项会 克隆一次 HTML 元�
   var app = angular.module("myApp",[]);
   app.directive("runoobDirective", function() {
     return {
+      // restrict: "ECMA",
+      // replace: true,
       template: "<h1>自定义指令！</h1>"
     }
   });
@@ -107,9 +109,121 @@ ng-repeat 指令对于集合中(数组中)的每个项会 克隆一次 HTML 元�
 你可以通过以下方式来调用指令：
 
 - 元素名
+`<runoob-directive></runoob-directive>`
 - 属性
+`<div runoob-directive></div>`
 - 类名
+`<div class="runoob-directive"></div>`
 - 注释
+`<!-- directive: runoob-direvtive -->`
+
+
+#### 限制使用
+你可以限制你的指令只能通过特定的方式来调用。
+restrict 值可以是以下几种：
+
+- E 作为元素名使用
+- A 作为属性使用
+- C 作为类名使用
+- M 作为注释使用
+
+restrict 默认值为 EA，即可以通过元素名和属性名来调用指令。
+<b>如果作为注释使用，则需要在该实例添加 replace 属性，否则评论是不可见的。</b>
+
+#### ng-model 指令
+ng-modal 指令可以将输入域的值与AngularJS创建的变量绑定
+``` html
+<div ng-app="myApp" ng-controller="myCtrl">
+  名字： <input type="text" ng-model="name">
+  <p>你输入了： {{ name }}</p>
+</div>
+
+<script>
+  var app = angular.module('myApp', []);
+  app.controller('myCtrl', function($scope){
+    $scope.name = "John Doe";
+  });
+</script>
+```
+
+验证用户输入
+``` html
+<form ng-app="" name="myForm">
+  Email:
+  <input type="email" name="myAddress" ng-model="text">
+  <span ng-show="myForm.myAddress.$error.email">不是一个合法的邮箱地址</span>
+</form>
+```
+
+#### 应用状态
+ng-modal 指令可以为应用数据提供状态值(invalid、dirty、touched、error)
+
+- Valid: true (如果输入的值是合法的则为 true)
+- Dirty: false (如果值改变则为 true)
+- Touched: false (如果通过触屏点击则为 true)
+
+#### CSS 类
+ng-model 指令基于它们的状态为 HTML 元素提供了 CSS 类。
+ng-model 指令根据表单域的状态添加/移除一下类：
+
+- ng-empty
+- ng-not-empty
+- ng-touched
+- ng-valid
+- ng-invalid
+- ng-dirty
+- ng-pending
+- ng-pristine
+
+#### AngularJS Scope(作用域)
+Scope(作用域)是应用在 HTML(视图) 和 JavaScript(控制器) 之间的纽带。
+Scope是一个对象，有可用的方法和属性。
+Scope可应用在视图和控制器上。
+
+#### Scope 作用范围
+了解你当前使用的 scope 是非常重要的。
+在之前的实例中，只有一个作用域 scope，所以处理起来比较简单，但在大型项目中，HTML DOM 有多个作用域，这时你就需要知道你使用 scope 对应的作用域是哪一个。
+``` html
+<scirpt>
+  var app = angular.module('myApp', []);
+  app.controller('myCtrl', function($scope) {
+    $scope.names = ["Emil", "Tobias", "Linus"];
+  });
+</scirpt>
+```
+
+#### 根作用域
+所有的应用都有一个 $rootScope，它可以作用在 ng-app 指令包含的所有 HTML 元素中。
+$rootScope 可作用于整个应用中。是各个 controller 中 scope 的桥梁。用 rootscope 定义的值，可以在各个 controller 中使用。
+``` html
+<script>
+  app.controller('myCtrl', function($scope, $rootScope) {
+    $scope.names = ["Emil", "Tobias", "Linus"];
+    $rootScope.lastname = "Refsnes";
+  });
+</script>
+```
+
+#### AngularJS 控制器
+AngularJS 应用程序被控制器控制。
+
+
+#### 外部文件中的控制器
+在大型的应用程序中，通常是把控制器存储在外部文件中。
+只需要把 `<scipt>` 标签中的代码复制到名为 personController.js 的外部文件中即可。
+
+#### AngularJS 过滤器
+过滤器可以使用一个管道字符(|)添加到表达式和指令中。
+
+
+
+
+
+
+
+
+
+
 
 
 
