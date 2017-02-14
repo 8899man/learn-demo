@@ -6,3 +6,5 @@ DEMO
 
 [谷歌插件的开发](https://github.com/Neveryu/learn-demo/tree/master/chrome_devtool)
 
+[vue-demo](./vue)
+
