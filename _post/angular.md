@@ -783,3 +783,106 @@ mainApp.service('CalcService', function(MathService) {
 ```
 
 
+**provider**
+AngularJS中通过 provider 创建一个service、factory等(配置阶段)
+Provider中提供了一个factory方法get()，它用于返回 value/service/factory
+``` javascript
+//定义一个模块
+var mainApp = angular.module("mainApp", []);
+
+//使用 provider创建service定义一个方法用于计算两数乘积
+mainApp.config(function($provide) {
+  $provide.provider('MathService', function(){
+    this.$get = function() {
+      var factory = {};
+      factory.multiply = function(a, b) {
+        return a * b;
+      }
+      return factory;
+    }
+  });
+});
+
+```
+
+**constant**
+constant(常量)用来在配置阶段传递数值，注意这个常量在配置阶段是不可用的。
+``` javascript
+mainApp.constant("configParam", "constant value");
+```
+
+
+**factory是一个函数用于返回值 && 也可以使用provider创建一个factory**
+``` javascript
+mainApp.config(function($provide) {
+  $provide.provider('MathService', function() {
+    this.$get = function() {
+      var factory = {};
+      factory.multiply = function(a, b) {
+        return a * b;
+      }
+      return factory;
+    };
+  });
+});
+```
+或
+``` javascript
+mainApp.factory('MathService', function() {
+  var factory = {};
+  factory.multiply = function(a, b) {
+    return a * b;
+  };
+  return factory;
+});
+```
+
+
+# AngularJS 路由
+通过 AngularJS 可以实现多视图的单页 Web 应用(single page web application,SPA)。
+通常我们的 URL 形式为 http://baidu.com/first/page ,但在单页 Web 应用中 AngularJS 通过 # + 标记实现，例如：
+``` 
+http://baidu.com#/first
+http://baidu.com#/second
+```
+
+实例解析：
+1、载入了实现路由的js文件：angular-route.js
+2、包含了 ngRoute 模块作为主应用模块的依赖模块
+`angular.module('routingDemoApp', ['ngRoute'])`
+
+配置$routeProvider、AngularJS $routeProvider 用来定义路由规则。
+``` javascript
+module.config(['$routeProvider', function($routeProvider){
+  $routeProvider
+    .when('/',{template: '这是首页页面'})
+    .when('/computers',{template: '这是电脑分类页面'})
+    .when('/printers',{template: '这是打印机页面'})
+    .otherwise({redirectTo: '/'});
+}]);
+```
+
+AngularJS 模块的 config 函数用于配置路由规则。通过使用 configAPI ，我们请求把 $routeProvider注入到我们的配置函数并且使用 $routeProvider.whenAPI 来定义我们的路由规则。
+$routeProvider 为我们提供了 when(path,object) & otherwise(object) 函数按顺序定义所有路由，函数包含两个参数：
+
+- 第一个参数是 URL 或者 URL 正则规则
+- 第二个参数是路由配置对象
+
+
+ng-app 指令位于应用的根元素下。
+对于单页 Web 应用(single page web application , SPA)，应用的根通常为 `<html>` 元素。
+一个或多个 ng-controller 指令定义了应用的控制器。每个控制器有他自己的作用域::定义的 HTML 元素。
+AngularJS 在 HTML DOMContentLoaded 事件中自动开始。如果找到 ng-app 命令，AngularJS 载入指令中的模块，并将 ng-app 作为应用的跟进行编译。
+应用的根可以是整个页面，或者页面的一小部分，如果是一小部分会更快编译和执行。
+
+
+
+
+
+
+
+
+
+
+
+
