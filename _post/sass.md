@@ -1,49 +1,3 @@
-关于hexo中页面不存在的问题解决方法：
----
-在博客的source目录下新建一个about目录，然后再about目录下新建index.md文件，编辑index.md文件后面生成的就是关于页面
-hexo clean
-hexo g
------------------------------------------------------------------
-
-关于字体图标
----
-http://www.iconfont.cn/collections/show/649
-这个网站不错
-----------------------------------------------------------------------
-jQuery slideDown slideUp上下滑
-`$("#slide").animate({width:'toggle'},350);`
-左右滑
-
----------------------------------------------------------
-
-$('.drawer-input').attr('contenteditable','true');   //div可编辑
-
--------------------------------------------------------
-
-gulp入门初步--使用gulp压缩前端代码
-http://www.5941740.cn/2016/02/19/gulp-learning/
-
--------------------------------------------------------
-
-jq toggle 默认执行？ 替代方法
-click，根据class来判断。。。
-
--------------------------------------------------
-
-Skype
-dong.yu@afmobigroup.com
-yudong123456
-yu
-dong
-
----------------------------------------------
-
-关于reset.css
-请记住：永远不存在万能解决方案，永远没有银弹。
-因此我的建议和 Eric 是一样的：请根据具体需求，适量裁剪和修改后再使用。
-
-----------------------------------------------------------
-
 关于sass compass browser-sync gulp的博客。。。
 ----
 sass博客的撰写参考
@@ -57,29 +11,7 @@ http://www.w3cplus.com/sassguide/syntax.html
 关于json与jsonp的文章很有意义，重写一份完整的。
 
 -----------
-NodeJS -- 基于时间驱动的回调
-这个问题可不好回答（至少对我来说），不过这是Node.js原生的工作方式。它是事件驱动的，这也是它为什么这么快的原因。
 
-你也许会想花点时间读一下Felix Geisendorfer的大作 Understanding node.js，它介绍了一些背景知识。
-
-这一切都归结于"Node.js是事件驱动的"这一事实。
-
-（请注意，当我们在服务器访问网页时，我们的服务器可能会输出两次"Request received."。那么因为大部分服务器都会在你访问http://localhost:8888/时尝试读取http://localhost:8888/favicon.ico）。
-
-
-这到底是为什么呢？原因就是start()包含了阻塞操作。形象的说就是“它阻塞了所有其他的处理工作”。
-这显然是个问题，因为Node一向是这样来标榜自己的：“在node中除了代码，所有一切都是并行执行的”。
-
-这句话的意思是说，Node.js可以在不新增额外线程的情况下，依然可以对任务进行并行处理 ———— Node.js是单线程的。它通过事件轮询（event loop）来实现并行操作，对此，我们应该要充分利用这一点 ———— 尽可能的避免阻塞操作，取而代之，多使用非阻塞操作。
-
-然而，要用非阻塞操作，我们需要使用回调，通过将函数作为参数传递给其他需要花时间做处理的函数（比方说，休眠10秒，或者查询数据库，又或者是进行大量的计算）。
-
-
-
-------------
-
-
-处理 github 提交 显示 MY DELL 的问题。。  【已处理】
 
 ○ sass 中多值变量
 多值变量分为list类型和map类型，简单来说list类型有点像js中的数组，而map类型有点像js中的对象
@@ -284,6 +216,7 @@ sass3.3.0中新增的功能，用来跳出选择器嵌套的。默认所有的�
   }
 }
 ```
+
 `@at-root(without:...)和@at-root(with:...)`
 默认@at-root只会跳出选择器嵌套，而不能跳出@media或@support，如果要跳出这两种，则需使用@at-root (without: media)，@at-root (without: support)。这个语法的关键词有四个：all（表示所有），rule（表示常规css），media（表示media），support（表示support，因为@support目前还无法广泛使用，所以在此不表）。我们默认的@at-root其实就是@at-root (without:rule)。
 ```sass
@@ -701,10 +634,3 @@ h3 {
 ```
 
 
-20160927日任务：删掉NexT的文章，先把《锋利的jQuery》搞完，然后，Node.js，PHP，Angular，Gulp，Webpack。
-
-关于学习的真谛在于“用”。先学再用，先用再学。一定要尝试，要用。
-
-jquery中`$.each()`与`each()`。
-http://api.jquery.com/jquery.each/
-https://api.jquery.com/each/
