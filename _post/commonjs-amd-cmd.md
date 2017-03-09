@@ -1,4 +1,5 @@
 - CommonJS规范
+> [CommonJS require 规范](http://wiki.commonjs.org/wiki/Modules/1.1.1#Require)
 
 - AMD(Asynchronous module definition)规范
 > AMD ，用白话文讲就是 **异步模块定义**
@@ -42,10 +43,15 @@ http://www.ruanyifeng.com/blog/2012/10/asynchronous_module_definition.html
 AMD也采用require()语句加载模块，但是不同于CommonJS，它要求两个参数：
 require([module], callback);
 
-目前，主要有两个Javascript库实现了AMD规范：require.js 和 curl.js。 本系列的第三部分，将通过介绍 [require.js](https://github.com/requirejs/requirejs) ，进一步讲解 AMD 的用法，以及如何将模块化编程投入实战。
+目前，主要有两个Javascript库实现了AMD规范：require.js 和 curl.js。
+[curl.js](https://github.com/cujojs/curl)
+
+本系列的第三部分，将通过介绍 [require.js](https://github.com/requirejs/requirejs) ，进一步讲解 AMD 的用法，以及如何将模块化编程投入实战。
+
+[Javascript模块化编程（三）：require.js的用法](http://www.ruanyifeng.com/blog/2012/11/require_js.html)
 
 实现 AMD 规范的加载器其实是挺多的，不过多数人还是用 require.js 。另外如果对 ES6 的模块感兴趣，可以考虑http://github.com/hax/my.js ，是按照ES6草案的module/loader规范实现的。
-my.js??很专业啊
+my.js??很专业啊。[my.js](http://github.com/hax/my.js)
 sea.js ?? 很专业啊 
 建议写一写 SeaJS 的 CMD 规范，与 AMD 非常类似，在国内的影响力非常大，但是个人觉得 SeaJS 比 RequireJS 好很多，另外由于是国人开发的，交流也非常方便，可以看到 github 上的更新、互动非常频繁
 
@@ -57,9 +63,13 @@ require.js的诞生，就是为了解决这两个问题：
 1. 对于依赖的模块，AMD 是**提前执行**，CMD 是**延迟执行**。不过 RequireJS 从2.0开始，也改成了可以延迟执行（根据写法不同，处理方式不同）。CMD 推崇 as lazy as possible.
 2. CMD 推崇**依赖就近**，AMD 推崇**依赖前置**
 
+[require.js 官方文档](http://requirejs.org/)
+
 
 
 **相关资料：**
+
+[http://www.2cto.com/kf/201411/350741.html](http://www.2cto.com/kf/201411/350741.html)
 
 [http://blog.csdn.net/jackwen110200/article/details/52105493](http://blog.csdn.net/jackwen110200/article/details/52105493)
 
