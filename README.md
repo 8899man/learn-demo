@@ -1,10 +1,10 @@
 DEMO
 --
-[学习过程中的一些随手笔记](https://github.com/Neveryu/learn-demo/tree/master/Learn_Node)
+[学习过程中的一些随手笔记](./_post)
 
-[jQuery实现轮播器](https://github.com/Neveryu/learn-demo/tree/master/Imageroll)
+[jQuery实现轮播器](./Imageroll)
 
-[谷歌插件的开发](https://github.com/Neveryu/learn-demo/tree/master/chrome_devtool)
+[谷歌插件的开发](./chrome_devtool)
 
 [vue-demo](./vue)
 
