@@ -5,23 +5,9 @@
 1. git pull --rebase origin resource
 2. git push -u origin master:resource
 
-git中执行命令 `add .`
-报错：Unlink of file 'templates/opma.exe' failed.Should I try again?(y/n)
-因为这个文件正在被占用，所以不能添加到暂存区，而正好这个 `.exe` 文件，我们是不需要添加到版本管理工具的。所以我们选择 `n` 。
 
-git中生成sshkey:
-`ssh-keygen -t rsa -C "youremail"`
-这个`email`并没有什么用
-所以我们使用`ssh-keygen -t rsa`来生成sshkey就可以了。
-然后git中的配置文件：
-`git config --list`
-`git config --global user.name "yu"`
-`git config --global user.email "react.dong.yu@gmail.com"`
-这种配置将会对本地所有的git仓库有效。
-那么在push的时候，远程就知道这个push来自于哪个email.
-但有时候在公司的时候，有的仓库是公司的，有的仓库是自己github的。
-这个时候就可以不设置global的配置了，而是在自己的仓库中设置
-`git config --local user.email "react.dong.yu@gmail.com"`
+
+
 
 -----GIT--------
 1.添加远程库
