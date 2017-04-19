@@ -71,19 +71,19 @@ module.js 通过 exports 对象把 setName 和 sayHello 作为模块的访问接
 
 如果有模块与核心模块命名冲突，Node.js 为什么可以选择加载核心模块呢？require 的实现机制是怎样的呢？
 
-#### 按路径加载模块
+#### 1、按路径加载模块
 
 如果 require 参数以 "/" 开头，那么就以绝对路径的方式查找模块名称，例如 `require('/home/neveryu/module')` 将会按照 优先级依次尝试加载 `/home/neveryu/module.js`、`/home/neveryu/module.json` 和 `/home/neveryu/module.node`。
 
 如果 require 参数 "./" 或 "../" 开头，那么则以相对路径的方式查找模块，这种方式在应用中是最常见的。例如前面的例子中我们用了 `require('./hello')`来加载同一文件夹下的 hello.js。
 
-#### 通过查找 node_modules 目录加载模块
+#### 2、通过查找 node_modules 目录加载模块
 
 如果 require 参数不以 "/" ， "./" 或 "../" 开头，而该模块又不是核心模块，那么就要通过查找 node_modules 加载模块了。我们使用 npm 获取的包通常就是以这种方式加载的。
 在 node_modules 目录的外面一层，外面可以直接使用 `require('express')` 来代替 `require('./node_modules/express')`。这是 Node.js 模块加载的一个重要特征：通过查找 node_modules 目录来加载模块。
 我们不仅要在 project 目录下的 app.js 中使用 `require('express')`，而且可能要在 controllers 子目录下的 index_controller.js 中也使用 `require('express')`，这时就需要向父目录上溯一层才能找到 node_modules 中的 express 了。
 
-#### 加载缓存
+#### 3、加载缓存
 Node.js 通过文件名缓存所有加载过的文件模块，所以以后再访问到时就不会重新加载了。注意，Node.js 是根据实际文件名缓存的，而不是 require() 提供的参数缓存的，也就是说即使你分别通过 `require('express')` 和 `require('./node_modules/express')`加载两次，也不会重复加载，因为尽管两次参数不同，解析到的文件却是同一个。
 
 
