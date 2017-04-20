@@ -45,3 +45,14 @@ webpack 自带一些插件，你可以可以通过 cnpm 安装一些插件。
 使用内置插件需要通过以下命令来安装：
 `cnpm install webpack --save-dev`
 这个时候就可以使用 webpack 的内置插件了。
+
+记得要在 `webpack.config.js` 开头引入 webpack 的包。
+`var webpack = require('webpack');`
+
+## 开发环境
+当项目逐渐变大，webpack 的编译时间会变长，可以通过参数让编译的输出内容带有进度和颜色。
+`webpack --progress --colors`
+
+`webpack --progress --colors --watch`
+
+当然，我们可以使用 webpack-dev-server 开发服务，这样我们就能通过 localhost:8080 启动一个 express 静态资源 web 服务器，并且会以**监听模式自动运行** webpack，在浏览器打开 http://localhost:8080/ 或 http://localhost:8080/webpack-dev-server/ 可以浏览项目中的页面和编译后的资源输出，并且通过一个 socket.io 服务**实时监听**它们的变化并自动刷新页面。
