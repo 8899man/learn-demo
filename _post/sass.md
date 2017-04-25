@@ -8,10 +8,6 @@ sass博客的撰写参考
 http://www.w3cplus.com/sassguide/syntax.html
 
 
-关于json与jsonp的文章很有意义，重写一份完整的。
-
------------
-
 
 ○ sass 中多值变量
 多值变量分为list类型和map类型，简单来说list类型有点像js中的数组，而map类型有点像js中的对象
