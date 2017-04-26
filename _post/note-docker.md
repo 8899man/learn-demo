@@ -177,8 +177,14 @@ $ docker login registrydomain.com -u hello -p world
 
 
 
+# NOTE
+1.dockerfile 里面的安装命令尽量在一行完成,最后删除不必要的组件，以缩小体积，加快启动速度，例如：
+```
+RUN yum -y install xxxx \\
+    yum -y remove xxxx
+```
 
-
+2.docker镜像名称必须全部小写，不能大写
 
 
 
