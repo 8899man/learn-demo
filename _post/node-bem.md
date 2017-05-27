@@ -1,5 +1,6 @@
 [可以按照这篇文章来写](http://www.w3cplus.com/css/mindbemding-getting-your-head-round-bem-syntax.html)
 [http://www.w3cplus.com/blog/tags/325.html](http://www.w3cplus.com/blog/tags/325.html)
+[http://blog.lxjwlt.com/front-end/2015/10/08/why-bem.html](http://blog.lxjwlt.com/front-end/2015/10/08/why-bem.html)
 
 
 [TOC]
