@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>javascript-幻灯片</title>
+	<link rel="stylesheet" href="./index.css">
+</head>
+<body>
+	<div class="slideshow-container">
+		<div class="mySlides fade">
+			<div class="numbertext">1 / 3</div>
+			<img src="./images/img1.jpg" style="width: 100%"alt="">
+			<div class="text">文本 1</div>
+		</div>
+
+		<div class="mySlides fade">
+			<div class="numbertext">2 / 3</div>
+			<img src="./images/img2.jpg" style="width: 100%" alt="">
+			<div class="text">文本 2</div>
+		</div>
+
+		<div class="mySlides fade">
+			<div class="numbertext">3 / 3</div>
+			<img src="./images/img3.jpg" style="width: 100%" alt="">
+			<div class="text">文本 3</div>
+		</div>
+
+		<a href="#" class="prev" onclick="plusSlides(-1)"><</a>
+		<a href="#" class="next" onclick="plusSlides(1)">></a>
+	</div>
+	<br>
+
+	<div style="text-align: center">
+		<span class="dot" onclick="currentSlide(1)"></span>
+		<span class="dot" onclick="currentSlide(2)"></span>
+		<span class="dot" onclick="currentSlide(3)"></span>
+	</div>
+
+	<script src="./index.js"></script>
+</body>
+</html>

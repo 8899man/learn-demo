@@ -8,3 +8,5 @@ DEMO
 
 [vue-demo](./vue)
 
+[js 幻灯片](./js_slide)
+
