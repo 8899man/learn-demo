@@ -3,16 +3,21 @@ title: 使用 Service worker 实现加速/离线访问静态 blog 网站
 date: 2016-04-15 23:31:09
 ---
 
-# 什么是 Service worker
-service worker 提供了很多新的能力，使得 web app 拥有与 nativeapp 相同的离线体验、消息推送体验。
-service worker 是一段脚本，与 web worker 一样，也是在后台运行。作为一个独立的线程，运行环境与普通脚本不同，所以不能直接参与 web 交互行为。native app 可以做到离线使用、消息推送、后台自动更新，service worker 的出现是正是为了使得 web app 也可以具有类似的能力。
+# Service worker
+有一个困扰 web 用户多年的难题——丢失网络连接。即使是世界上最好的 web app，如果下载不了它，也是非常糟糕的体验。如今虽然已经有很多种技术去尝试着解决这一问题。而随着**离线页面**的出现，一些问题已经得到了解决。但是，最重要的问题是，仍然没有一个好的统筹机制对资源缓存和自定义的网络请求进行控制。
 
-
+于是 HTML5 提出了 Service Worker，Service worker 提供了很多新的能力，使得 web app 拥有与 nativeapp 相同的离线体验、消息推送体验。
+Service worker 是一段脚本，与 web worker 一样，也是在后台运行。作为一个独立的线程，运行环境与普通脚本不同，所以不能直接参与 web 交互行为。native app 可以做到离线使用、消息推送、后台自动更新，service worker 的出现是正是为了使得 web app 也可以具有类似的能力。
 
 # 为什么要使用 Service worker
+现在很流行基于 GitHub page 和 markdown 的静态 blog ，非常适合技术的思维和习惯，针对不同的语言都有一些优秀的静态 blog 系统出现，如 Jekyll/Ruby，Pelican/Python，Hexo/NodeJs ，由于静态内容的特性非常适合做缓存来加速页面的访问，就利用 Service worker 来实现加速，结果是除了 PageSpeed，CDN 这些常见的服务器和网络加速之外，通过客户端实现了更好的访问体验。
 
 # 如何使用 Service worker
+在使用 Service worker 之前，有必要了解一些 Service worker 的运行原理和基本架构。
 
+
+
+chrome://serviceworker-internals/
 现在你可以到 chrome://inspect/#service-workers 这里，检查 service worker 是否对你的网站启用了。 
 
 service-worker.js 文件，我建议是放在网站的跟目录下。
