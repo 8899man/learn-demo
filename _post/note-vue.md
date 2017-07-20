@@ -1,4 +1,4 @@
-vue.js通过v-on完成事件处理与绑定，比如为一个button绑定click事件，我们就可以这么写：
+vue.js 通过 v-on 完成事件处理与绑定，比如为一个button绑定click事件，我们就可以这么写：
 ```
 <button v-on:click="doSomething">doSomething</button>
 ```
