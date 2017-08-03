@@ -1,10 +1,16 @@
+在 Vue1.x ：
+每一个vue的实例（new Vue({})）就是一个组件。
+每一个vue的实例（new Vue({})）中需要 el 属性绑定到一个对应需要渲染的模版上，
+vue的实例中的属性还有：data methods
+
 vue.js 通过 v-on 完成事件处理与绑定，比如为一个button绑定click事件，我们就可以这么写：
 ```
 <button v-on:click="doSomething">doSomething</button>
 ```
 也可以缩写：
 ```
-<button @click="doSomething">doSomething</button>
+<button @click="doSomething"
+>doSomething</button>
 ```
 
 var vm = new Vue({
