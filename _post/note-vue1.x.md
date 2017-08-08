@@ -362,12 +362,16 @@ var example2 = new Vue({
 ```
 
 ### 变异方法
+
 Vue.js 包装了被观察数组的变异方法，故它们能触发视图更新。被包装的方法有：
 push()、pop()、shfit()、unshift()、splice()、sort()、reverse()
+
 ### 替换数组
+
 变异方法，如名字所示，修改了原始数组。相比之下，也有非变异方法，如 filter(), concat() 和 slice()，不会修改原始数组而是返回一个新数组。在使用非变异方法时，可以直接用新数组替换旧数组，**也能达到触发视图更新的效果。**
 
 ### track-by
+
 有时需要用全新对象（例如通过 API 调用创建的对象）替换数组。因为 v-for 默认通过数据对象的特征来决定对已有作用域和 DOM 元素的复用程度，这可能导致重新渲染整个列表。但是，如果每个对象都有一个唯一 ID 的属性，便可以使用 track-by 特性给 Vue.js **一个提示**，Vue.js 因而能尽可能地复用已有实例。
 如何给 vue 一个提示？
 ```
@@ -387,10 +391,12 @@ push()、pop()、shfit()、unshift()、splice()、sort()、reverse()
 items 有什么字段可以用来 track-by 呢？类似于数据库中的主键。
 
 ### track-by $index
+
 如果没有唯一的键供追踪，可以使用 track-by="$index"，它强制让 v-for 进入原位更新模式：片断不会被移动，而是简单地以对应索引的新值刷新。这种模式也能处理数据数组中重复的值。
 这让数据替换非常高效。
 
 ### 问题
+
 因为 JavaScript 的限制，Vue.js 不能检测到下面数组变化：
 
 1.直接用索引设置元素，如 vm.items[0] = {}；
@@ -405,6 +411,7 @@ example1.items.$set(0, { childMsg: 'Changed!'})
 
 
 ### 对象 v-for
+
 也可以使用 v-for 遍历对象。除了 $index 之外，作用域内还可以访问另外一个特殊变量 $key。
 ```
 <li v-for="value in object">
@@ -417,15 +424,18 @@ example1.items.$set(0, { childMsg: 'Changed!'})
 ```
 
 ### 值域 v-for
+
 v-for 也可以接收一个整数，此时它将重复模板数次。
 
 ### 显示过滤/排序的结果
+
 原数据不变，显示过滤/排序过的数组，两个办法：
 1、创建一个计算属性，返回过滤/排序过的数组；
 2、使用内置的过滤器 filterBy 和 orderBy。
 
 
 ## 方法与事件处理器
+
 v-on
 v-on:click="greet"
 v-on:click="say('what')"
@@ -468,6 +478,7 @@ Vue.js 允许为 v-on 添加按键修饰符：
 
 全部的按键别名：
 
+```
 enter
 tab
 delete
@@ -477,6 +488,7 @@ up
 down
 left
 right
+```
 
 另外 1.0.8+ 也支持单字母按键别名。
 
@@ -496,7 +508,9 @@ methods: {
 `vm1.greet();`
 
 ## 表单
+
 ### 值绑定
+
 对于单选按钮，勾选框及选择框选项，v-model 绑定的值通常是静态字符串（对于勾选框是逻辑值）。
 
 但是有时我们想绑定值到 Vue 实例一个动态属性上。可以用 v-bind 做到。 而且 v-bind 允许绑定输入框的值到非字符串值。
@@ -520,24 +534,209 @@ v-bind:value = "{ number: 124}" 也是可以的。
 
 
 ### lazy
+
 数据双向绑定是实时监听的，你可以添加一个特性 lazy，从而改到在 change 事件中同步。
 
 ### number
+
 如果想自动将用户的输入保持为数字，可以添加一个特性 number：
 `<input v-model="age" number>`
 
 
 ### debounce
+
 debounce 设置一个最小的延时，在每次敲击之后延时同步输入框的值与数据。如果每次更新都要进行高耗操作（例如在输入提示中 Ajax 请求），它较为有用。
 `<input v-model="msg" debounce="500">`
 
 
 **注意 debounce 参数不会延迟 input 事件：它延迟“写入”底层数据。因此在使用 debounce 时应当用 vm.$watch() 响应数据的变化。若想延迟 DOM 事件，应当使用 debounce 过滤器。**
 
+## Transitions
+
+### 过渡使用场景
+
+- v-if
+- v-show
+- v-for（插入和删除）
+- 动态组件
+- 在组件的根节点上，并且被 Vue 实例 DOM 方法（如 vm.$appendTo(el)）触发。
+
+```
+实例
+<div v-if="show" transition="my-transition"></div>
+
+<div v-if="show" transition="expand">hello</div>
+
+<div v-if="show" :transition="transitionName">hello</div>
+new Vue({
+  el: '...',
+  data: {
+    show: false,
+    transitionName: 'fade'
+  }
+})
+```
+
+在自定义一个动画的时候，可以挂钩子：
+```
+Vue.transition('expand', {
+  beforeEnter: function (el) {
+    el.textContent = 'beforeEnter'
+  },
+  enter: function (el) {
+    el.textContent = 'enter'
+  },
+  afterEnter: function (el) {
+    el.textContent = 'afterEnter'
+  },
+  enterCancelled: function (el) {
+    // handle cancellation
+  },
+  beforeLeave: function (el) {
+    el.textContent = 'beforeLeave'
+  },
+  leave: function (el) {
+    el.textContent = 'leave'
+  },
+  afterLeave: function (el) {
+    el.textContent = 'afterLeave'
+  },
+  leaveCancelled: function (el) {
+    // handle cancellation
+  }
+})
+```
+
+
+### 过渡的 CSS 类名
+
+类名的添加和切换取决于 transition 特性的值。比如 transition="fade"，会有三个 CSS 类名：
+
+1. .fade-transition 始终保留在元素上。
+
+2. .fade-enter 定义进入过渡的开始状态。只应用一帧然后立即删除。
+
+3. .fade-leave 定义离开过渡的结束状态。在离开过渡开始时生效，在它结束后删除。
+如果 transition 特性没有值，类名默认是 .v-transition, .v-enter 和 .v-leave。
+
+
+### 自定义过渡类名 1.0.14 新增
+
+我们可以在过渡的 JavaScript 定义中声明自定义的 CSS 过渡类名。这些自定义类名会覆盖默认的类名。当需要和第三方的 CSS 动画库，比如 Animate.css 配合时会非常有用：
+```
+<div v-show="ok" class="animated" transition="bounce">Watch me bounce</div>
+Vue.transition('bounce', {
+  enterClass: 'bounceInLeft',
+  leaveClass: 'bounceOutRight'
+})
+```
+
+### 显式声明 CSS 过渡类型
+
+如果有两种动画类型(animation / transition)同时作用在一个元素上，你可以显示声明你希望 vue 处理的动画类型。
+```
+Vue.transition('bounce', {
+  // 该过渡效果将只侦听 `animationend` 事件
+  type: 'animation'
+})
+```
+
+### CSS 动画
+
+用 css 来做动画
+
+### js 动画
+
+用 js 来做动画
+
+### 渐进过渡
+
+stagger enter-stagger leave-stagger
+
+使用场景：Only changes to the array or object provided to v-for。不能 v-if or v-show 。
 
 
 
+## 组件
 
+**创建**
+```
+var MyComponent = Vue.extend({
+  // 选项
+})
+```
+
+**注册**
+```
+// 全局注册组件，tag 为 my-component
+Vue.component('my-component', MyComponent)
+```
+
+*小写，并且包含一个短杠），尽管遵循这个规则比较好。*
+
+在注册之后，组件便可以用在父实例的模块中，以自定义元素 <my-component> 的形式使用。**要确保在初始化根实例之前注册了组件**。
+
+注意组件的模板替换了自定义元素，自定义元素的作用只是作为一个**挂载点**。这可以用实例选项 replace 改变 。
+
+### 局部注册
+
+### 注册语法糖
+```
+// 在一个步骤中扩展与注册
+Vue.component('my-component', {
+  template: '<div>A custom component!</div>'
+})
+
+// 局部注册也可以这么做
+var Parent = Vue.extend({
+  components: {
+    'my-component': {
+      template: '<div>A custom component!</div>'
+    }
+  }
+})
+```
+
+### 组件选项问题
+传入 Vue 构造器的多数选项也可以用在 Vue.extend() 中，不过有两个特例： data and el。试想如果我们简单地把一个对象作为 data 选项传给 Vue.extend()：
+```
+var data = { a: 1 }
+var MyComponent = Vue.extend({
+  data: data
+})
+```
+这么做的问题是 MyComponent 所有的实例将共享同一个 data 对象！这基本不是我们想要的，因此我们应当使用一个函数作为 data 选项，函数返回一个新对象：
+```
+var MyComponent = Vue.extend({
+  data: function () {
+    return { a: 1 }
+  }
+})
+```
+同理，el 选项用在 Vue.extend() 中时也须是一个函数。
+
+### is 特性
+
+table 使用自定义模板 需要 is 。
+```
+<table>
+  <tr is="my-component"></tr>
+</table>
+```
+
+### Props
+
+父子组件，数据交互。
+
+HTML 特性不区分大小写。名字形式为 camelCase 的 prop 用作特性时，需要转为 kebab-case（短横线隔开）
+
+### 动态 Props
+`<child v-bind:my-message="parentMsg"></child>` 可以动态传值。
+
+### 字面量语法 vs. 动态语法
+
+### Prop 绑定类型
+prop 默认是单向绑定：当父组件的属性变化时，将传导给子组件，但是反过来不会。这是为了防止子组件无意修改了父组件的状态——这会让应用的数据流难以理解。不过，也可以使用 .sync 或 .once 绑定修饰符显式地强制双向或单次绑定 。
 
 
 
