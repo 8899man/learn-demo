@@ -483,6 +483,60 @@ right
 当一个 ViewModel 被销毁时，所有的事件处理器都会自动被删除。你无须担心如何自己清理它们。
 
 
+**每一个Vue实例除了能代理data中的字段属性外，还能代理methods中的字段属性。**
+```
+methods: {
+    greet: function(e){
+        alert('Hello' + this.name + '!');
+        alert(e.target.tagName);
+    }
+}
+
+```
+`vm1.greet();`
+
+## 表单
+### 值绑定
+对于单选按钮，勾选框及选择框选项，v-model 绑定的值通常是静态字符串（对于勾选框是逻辑值）。
+
+但是有时我们想绑定值到 Vue 实例一个动态属性上。可以用 v-bind 做到。 而且 v-bind 允许绑定输入框的值到非字符串值。
+
+```
+<input
+  type="checkbox"
+  v-model="toggle"
+  v-bind:true-value="a"
+  v-bind:false-value="b">
+```
+理论上选中的时候 toggle 应该是 true ，没选中的时候 toggle 是 false 。但是使用了 v-bind:true 和 v-bind:false 后，选中后 toggle 的值是 data 中的 a 的值，没有选中就是 data 中 b 的值。
+
+
+同理，Radio 也是这样：
+```
+<input type="radio" v-model="pick" v-bind:value="a">
+```
+
+v-bind:value = "{ number: 124}" 也是可以的。
+
+
+### lazy
+数据双向绑定是实时监听的，你可以添加一个特性 lazy，从而改到在 change 事件中同步。
+
+### number
+如果想自动将用户的输入保持为数字，可以添加一个特性 number：
+`<input v-model="age" number>`
+
+
+### debounce
+debounce 设置一个最小的延时，在每次敲击之后延时同步输入框的值与数据。如果每次更新都要进行高耗操作（例如在输入提示中 Ajax 请求），它较为有用。
+`<input v-model="msg" debounce="500">`
+
+
+**注意 debounce 参数不会延迟 input 事件：它延迟“写入”底层数据。因此在使用 debounce 时应当用 vm.$watch() 响应数据的变化。若想延迟 DOM 事件，应当使用 debounce 过滤器。**
+
+
+
+
 
 
 
