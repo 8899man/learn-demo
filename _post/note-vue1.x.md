@@ -738,6 +738,91 @@ HTML 特性不区分大小写。名字形式为 camelCase 的 prop 用作特性�
 ### Prop 绑定类型
 prop 默认是单向绑定：当父组件的属性变化时，将传导给子组件，但是反过来不会。这是为了防止子组件无意修改了父组件的状态——这会让应用的数据流难以理解。不过，也可以使用 .sync 或 .once 绑定修饰符显式地强制双向或单次绑定 。
 
+注意如果 prop 是一个对象或数组，是按引用传递。在子组件内修改它会影响父组件的状态，不管是使用哪种绑定类型。
+
+
+### Prop 验证
+组件可以为 props 指定验证要求。当组件给其他人使用时这很有用，因为这些验证要求构成了组件的 API，确保其他人正确地使用组件。**此时 props 的值是一个对象**，包含验证要求：
+```
+Vue.component('example', {
+  props: {
+    // 基础类型检测 （`null` 意思是任何类型都可以）
+    propA: Number,
+    // 必需且是字符串
+    propB: {
+      type: String,
+      required: true
+    },
+    // 数字，有默认值
+    propC: {
+      type: Number,
+      default: 100
+    },
+    // 对象/数组的默认值应当由一个函数返回
+    propD: {
+      type: Object,
+      default: function () {
+        return { msg: 'hello' }
+      }
+    },
+    // 指定这个 prop 为双向绑定
+    // 如果绑定类型不对将抛出一条警告
+    propE: {
+      twoWay: true
+    },
+    // 自定义验证函数
+    propF: {
+      validator: function (value) {
+        return value > 10
+      }
+    },
+    // 转换函数（1.0.12 新增）
+    // 在设置值之前转换值
+    propG: {
+      coerce: function (val) {
+        return val + '' // 将值转换为字符串
+      }
+    },
+    propH: {
+      coerce: function (val) {
+        return JSON.parse(val) // 将 JSON 字符串转换为对象
+      }
+    }
+  }
+})
+```
+type 可以是下面原生构造器：
+
+String
+Number
+Boolean
+Function
+Object
+Array
+type 也可以是一个自定义构造器，使用 instanceof 检测。
+
+当 prop 验证失败了，Vue 将拒绝在子组件上设置此值，如果使用的是开发版本会抛出一条警告。
+
+
+### 父子组件通信
+子组件可以用 this.$parent 访问它的父组件。根实例的后代可以用 this.$root 访问它。父组件有一个数组 this.$children，包含它所有的子元素。
+不过子组件应当避免直接依赖父组件的数据，尽量显式地使用 props 传递数据。
+另外，在子组件中修改父组件的状态是非常糟糕的做法。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
