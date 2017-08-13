@@ -823,8 +823,338 @@ Vue 实例实现了一个自定义事件接口，用于在组件树中通信。�
 
 不同于 DOM 事件，Vue 事件在冒泡过程中第一次触发回调之后自动停止冒泡，除非回调明确返回 `true`。
 
+### 异步组件
+Vue.js 允许将组件定义为一个工厂函数，动态地解析组件的定义。Vue.js 只在组件需要渲染时触发工厂函数，并且把结果缓存起来，用于后面的再次渲染。
+```
+Vue.component('async-example', function (resolve, reject) {
+  setTimeout(function () {
+    resolve({
+      template: '<div>I am async!</div>'
+    })
+  }, 1000)
+})
+```
+resolve 和 reject
 
 
+### 资源命名约定
+
+我们知道 HTML 标签是不区分大小写的，所以资源的名字通常需使用 kebab-case 而不是 camelCase 的形式，这不大方便。Vue.js 支持资源的名字使用 camelCase 或 PascalCase 的形式，并且在模版中自动将它们转为 kebab-case 。
+
+
+### 递归组件
+组件在它的模板内可以递归地调用自己，不过，只有当它有 name 选项时才可以。
+```
+var StackOverflow = Vue.extend({
+  name: 'stack-overflow',
+  template:
+    '<div>' +
+      // 递归地调用它自己
+      '<stack-overflow></stack-overflow>' +
+    '</div>'
+})
+```
+上面组件会导致一个错误 "max stack size exceeded"，所以要确保递归调用有终止条件。当使用 Vue.component() 全局注册一个组件时，组件 ID 自动设置为组件的 name 选项。
+
+
+## 深入响应式原理
+Vue.js 最显著的一个功能是响应系统--模型只是普通对象，修改它则更新视图，这让状态管理非常简单且直观，不过理解它的原理也很重要，可以避免一些常见问题，下面我开始深挖 Vue.js 响应系统的底层细节。
+
+
+一个问题是在浏览器控制台打印数据对象时 getter/setter 的格式化不同，使用 vm.$log() 实例方法可以得到更友好的输出。
+
+### 变化检测问题
+受 ES5 的限制，Vue.js **不能检测到对象属性的添加或删除**。因为 Vue.js 在初始化实例时将属性转为 getter/setter，所以属性必须在 data 对象上才能让 Vue.js 转换它，才能让它是响应的。
+
+不过，有办法在实例创建之后添加属性并且让它是响应的。
+
+对于 Vue 实例，可以使用 $set(key, value) 实例方法：
+```
+vm.$set('b', 2)
+// `vm.b` 和 `data.b` 现在是响应的
+```
+对于普通数据对象，可以使用全局方法 Vue.set(object, key, value)：
+```
+Vue.set(data, 'c', 3)
+// `vm.c` 和 `data.c` 现在是响应的
+```
+
+### 初始化数据
+尽管 Vue.js 提供了 API 动态地添加响应属性，还是推荐在 data 对象上声明所有的响应属性。
+
+### 异步更新队列
+Vue.js 默认异步更新 DOM。每当观察到数据变化时，Vue 就开始一个队列，将同一事件循环内所有的数据变化缓存起来。如果一个 watcher 被多次触发，只会推入一次到队列中。等到下一次事件循环，Vue 将清空队列，只进行必要的 DOM 更新。在内部异步队列优先使用 MutationObserver，如果不支持则使用 setTimeout(fn, 0)。
+
+
+尽管 Vue.js 鼓励开发者沿着数据驱动的思路，避免直接修改 DOM，但是有时确实要这么做。为了在数据变化之后等待 Vue.js 完成更新 DOM，可以在数据变化之后立即使用 Vue.nextTick(callback) 。回调在 DOM 更新完成后调用。
+
+```
+Vue.nextTick(function(){
+  vm.$el.textContent === 'new message'
+});
+```
+
+vm.$nextTick() 这个实例方法比较方便，因为它不需要全局 Vue，它的回调的 this 自动绑定到当前 Vue 实例。
+```
+Vue.component('example', {
+  template: '<span>{{msg}}</span>',
+  data: function () {
+    return {
+      msg: 'not updated'
+    }
+  },
+  methods: {
+    updateMessage: function () {
+      this.msg = 'updated'
+      console.log(this.$el.textContent) // => 'not updated'
+      this.$nextTick(function () {
+        console.log(this.$el.textContent) // => 'updated'
+      })
+    }
+  }
+})
+```
+
+### 计算属性的秘密
+在计算一个计算属性时，Vue.js 更新它的依赖列表并缓存结果，只有当其中一个依赖发生了变化，缓存的结果才无效。因此，只要依赖不发生变化，访问计算属性会直接返回缓存的结果，而不是调用 getter。
+
+
+有时希望 getter 不改变原有的行为，每次访问 vm.example 时都调用 getter。这时可以为指定的计算属性关闭缓存。
+```
+computed: {
+  example: {
+    cache: false,
+    get: function () {
+      return Date.now() + this.msg
+    }
+  }
+}
+```
+注意，这种用法只在 js 中访问是这样的，数据绑定仍是依赖驱动的，所以在 HTML 模版中 template ,绑定计算属性，依然是只有响应依赖发生变化时才更新 DOM 。
+
+## 自定义指令
+vue 中有指令 v-for v-on v-in 。还可以自定义指令。
+
+可以用 Vue.directive(id, definition) 方法注册一个全局自定义指令，它接收两个参数指令 ID 与定义对象。也可以用组件的 directives 选项注册一个局部自定义指令。
+
+### 钩子函数
+钩子函数都是可选的。
+
+- bind ： 只调用一次，在指令第一次绑定到元素上时调用。
+- update: 在 bind 之后立即以初始值为参数第一次调用，之后每当绑定值变化时调用，参数为新值与旧值。
+- unbind: 只调用一次，在指令从元素上解绑时调用。
+
+```
+Vue.directive('my-directive', {
+  bind: function () {
+    // 准备工作
+    // 例如，添加事件处理器或只需要运行一次的高耗任务
+  },
+  update: function (newValue, oldValue) {
+    // 值更新时的工作
+    // 也会以初始值为参数调用一次
+  },
+  unbind: function () {
+    // 清理工作
+    // 例如，删除 bind() 添加的事件监听器
+  }
+})
+```
+在注册之后，便可以在 Vue.js 模板中这样用（记着添加前缀 v-）。
+`<div v-my-directive="someValue"></div>`
+
+当只需要 update 函数时，可以传入一个函数替代定义对象：
+```
+Vue.directive('my-directive', function (value) {
+  // 这个函数用作 update()
+})
+```
+
+
+### 指令实例属性
+所有的钩子函数将被复制到实际的指令对象中，钩子内 this 指向这个指令对象。这个对象暴露了一些有用的属性：
+
+- el: 指令绑定的元素
+- vm: 拥有该指令的上下文 ViewModel
+- expression: 指令的表达式，不包括参数和过滤器
+- arg: 指令的参数
+- name: 指令的名字，不包含前缀
+- modifiers: 一个对象，包含指令的修饰符
+- descriptor: 一个对象，包含指令的解析结果
+
+
+
+### 对象字面量
+
+如果指令需要多个值，可以传入一个 JavaScript 对象字面量。记住，指令可以使用任意合法的 JavaScript 表达式：
+
+```
+<div v-demo="{ color: 'white', text: 'hello!' }"></div>
+
+Vue.directive('demo', function (value) {
+  console.log(value.color) // "white"
+  console.log(value.text) // "hello!"
+})
+```
+
+### 字面量修饰符
+
+`<div v-demo.literal="foo bar baz">`
+
+### params
+
+自定义指令可以接收一个 params 数组，指定一个特性列表，Vue 编译器将自动提取绑定元素的这些特性。
+
+### deep
+
+如果自定义指令用在一个对象上，当对象内部属性变化时要触发 update，则在指令定义对象中指定 deep: true。
+
+### twoWay
+如果指令想向 Vue 实例写回数据，则在指令定义对象中指定 twoWay: true 。该选项允许在指令中使用 this.set(value)。
+
+### acceptStatement
+传入 acceptStatement:true 可以让自定义指令接受内联语句，就像 v-on 那样：
+`<div v-my-directive="a++"></div>`
+
+### priority
+
+可以给指令指定一个优先级（默认是 1000）。同一个元素上优先级高的指令会比其它指令处理得早一些。优先级一样的指令按照它在元素特性列表中出现的顺序依次处理，但是不能保证这个顺序在不同的浏览器中是一致的。
+
+以在 API 中查看内置指令的优先级。另外，流程控制指令 v-if 和 v-for 在编译过程中始终拥有最高的优先级。
+
+
+
+##  自定义过滤器
+
+类似于自定义指令，可以用全局方法 Vue.filter() 注册一个自定义过滤器，它接收两个参数：过滤器 ID 和过滤器函数。过滤器函数以值为参数，返回转换后的值：
+
+过滤器函数可以接收任意数量的参数：
+
+### 双向过滤器
+目前我们使用过滤器都是在把来自模型的值显示在视图之前转换它。不过也可以定义一个过滤器，在把来自视图（<input> 元素）的值写回模型之前转化它：
+```
+Vue.filter('currencyDisplay', {
+  // model -> view
+  // 在更新 `<input>` 元素之前格式化值
+  read: function(val) {
+    return '$'+val.toFixed(2)
+  },
+  // view -> model
+  // 在写回数据之前格式化值
+  write: function(val, oldVal) {
+    var number = +val.replace(/[^\d.]/g, '')
+    return isNaN(number) ? 0 : parseFloat(number.toFixed(2))
+  }
+})
+```
+
+内置过滤器 filterBy 和 orderBy，根据所属 Vue 实例的当前状态，过滤/排序传入的数组。
+
+
+## 混合
+混合以一种灵活的方式为组件提供分布复用功能。混合对象可以包含任意的组件选项。当组件使用了混合对象时，混合对象的所有选项将被“混入”组件自己的选项中。
+```
+// 定义一个混合对象
+var myMixin = {
+  created: function () {
+    this.hello()
+  },
+  methods: {
+    hello: function () {
+      console.log('hello from mixin!')
+    }
+  }
+}
+
+// 定义一个组件，使用这个混合对象
+var Component = Vue.extend({
+  mixins: [myMixin]
+})
+
+var component = new Component() // -> "hello from mixin!"
+```
+
+
+### 选项合并
+当混合对象与组件包含同名选项时，这些选项将以适当的策略合并。例如，同名钩子函数被并入一个数组，因而都会被调用。另外，混合的钩子将在组件自己的钩子之前调用。
+
+
+值为对象的选项，如 methods, components 和 directives 将合并到同一个对象内。如果键冲突则组件的选项优先。
+
+
+注意 Vue.extend() 使用同样的合并策略。
+
+### 全局混合
+
+也可以全局注册混合。小心使用！一旦全局注册混合，它会影响所有之后创建的 Vue 实例。如果使用恰当，可以为自定义选项注入处理逻辑：
+```
+// 为 `myOption` 自定义选项注入一个处理器
+Vue.mixin({
+  created: function () {
+    var myOption = this.$options.myOption
+    if (myOption) {
+      console.log(myOption)
+    }
+  }
+})
+
+new Vue({
+  myOption: 'hello!'
+})
+// -> "hello!"
+```
+
+### 自定义选项合并策略
+在合并自定义选项时，默认的合并策略是简单地覆盖已有值。如果想用自定义逻辑合并自定义选项，则向
+Vue.config.optionMergeStrantegies 添加一个函数：
+```
+Vue.config.optionMergeStrategies.myOption = function (toVal, fromVal) {
+  // 返回 mergedVal
+}
+```
+
+对于多数值为对象的选项，可以简单的使用 methods 所用的合并策略：
+
+```
+var strategies = Vue.config.optionMergeStrategies
+strategies.myOption = strategies.methods
+```
+
+
+## 插件
+Vue.js 的插件应当有一个公开方法 install。这个方法的第一个参数是 Vue 构造器，第二个参数是一个可选的选项对象：
+```
+MyPlugin.install = function (Vue, options) {
+  // 1. 添加全局方法或属性
+  Vue.myGlobalMethod = ...
+  // 2. 添加全局资源
+  Vue.directive('my-directive', {})
+  // 3. 添加实例方法
+  Vue.prototype.$myMethod = ...
+}
+```
+
+### 使用插件
+通过 Vue.use() 全局方法使用插件：
+```
+// 调用 `MyPlugin.install(Vue)`
+Vue.use(MyPlugin)
+```
+
+也可以传一个选项对象：
+```
+Vue.use(MyPlugin, { someOption: true})
+```
+
+一些插件，如 vue-router，如果 Vue 是全局变量则自动调用 Vue.use()。不过在模块环境中应当始终显式调用 Vue.use()：
+```
+// 通过 Browserify 或 Webpack 使用 CommonJS 兼容模块
+var Vue = require('vue')
+var VueRouter = require('vue-router')
+
+// 不要忘了调用此方法
+Vue.use(VueRouter)
+```
 
 
 
@@ -843,4 +1173,5 @@ Vue 实例实现了一个自定义事件接口，用于在组件树中通信。�
 ---
 
 vue-resource作为vue插件的形式存在，通过XMLHttpRequest 或 JSONP 发起请求并处理响应。在开发中也非常常见，现在我们用vue-resource来请求books：
+
 
