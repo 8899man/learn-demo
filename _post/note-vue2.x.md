@@ -41,9 +41,14 @@ new Vue({
 可以说使用 computed 性能会更好，但是如果你不希望缓存，你可以使用 methods 属性。
 
 
+# 实例生命周期
+在实例生命周期的不同阶段调用。如 created、 mounted、 updated、 destroyed 。
+
+# 生命周期图示
+![vue2生命周期](./vue2-lifecycle.png)
 
 
-
-
+## `v-for` with `v-if`
+当它们处于同一节点， v-for 的优先级比 v-if 更高，这意味着 v-if 将分别重复运行于每个 v-for 循环中。当你想为仅有的 一些 项渲染节点时，这种优先级的机制会十分有用，如下：
 
 
