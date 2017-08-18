@@ -631,6 +631,10 @@ Vue.transition('bounce', {
 })
 ```
 
+`解释：当我们使用第三方的 CSS 动画库的时候，这个时候，过渡的动画类名可能需要使用第三方的类名。可以在这里修改。`
+
+
+
 ### 显式声明 CSS 过渡类型
 
 如果有两种动画类型(animation / transition)同时作用在一个元素上，你可以显示声明你希望 vue 处理的动画类型。
@@ -645,13 +649,29 @@ Vue.transition('bounce', {
 
 用 css 来做动画
 
-### js 动画
+### js 过渡
 
-用 js 来做动画
+用 js 来做过渡效果。
+为 JavaScript 过渡显式声明 css: false 是个好主意，Vue.js 将跳过 CSS 检测。这样也会阻止无意间让 CSS 规则干扰过渡。
+
+```
+Vue.transition('fade', {
+  css: false,
+  enter: function (el, done) {
+    // 元素已被插入 DOM
+    // 在动画结束后调用 done
+    $(el)
+      .css('opacity', 0)
+      .animate({ opacity: 1 }, 1000, done)
+  },
+  ...
+);
+```
+
 
 ### 渐进过渡
 
-stagger enter-stagger leave-stagger
+transition 与 v-for 一起用时可以创建渐进过渡。给过渡元素添加一个特性 stagger, enter-stagger 或 leave-stagger：
 
 使用场景：Only changes to the array or object provided to v-for。不能 v-if or v-show 。
 
@@ -659,7 +679,7 @@ stagger enter-stagger leave-stagger
 
 ## 组件
 
-**创建**
+**创建一个组件构造器**
 ```
 var MyComponent = Vue.extend({
   // 选项
