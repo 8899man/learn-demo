@@ -184,3 +184,72 @@ Vue.config.keyCodes.f1 = 112
   <tr is="my-row"></tr>
 </table>
 ```
+
+**应当注意，如果你使用来自以下来源之一的字符串模板，这些限制将不适用：**
+- `<script type="text/x-template">`
+- JavaScript 内联模板字符串
+- `.vue` 组件
+
+因此， 有必要的话请使用字符串模板。
+
+# 构成组件
+在 Vue 中，父子组件的关系可以总结为 props down, events up。父组件通过 props 向下传递数据给子组件，子组件通过 events 给父组件发送消息。
+
+prop 是单向绑定的：当父组件的属性变化时，将传导给子组件，但是不会反过来。这是为了防止子组件无意修改了父组件的状态——这会让应用的数据流难以理解。
+另外，每次父组件更新时，子组件的所有 prop 都会更新为最新值。这意味着你不应该在子组件内部改变 prop。如果你这么做了，Vue 会在控制台给出警告。
+
+注意在 JavaScript 中对象和数组是引用类型，指向同一个内存空间，如果 prop 是一个对象或数组，在子组件内部改变它会影响父组件的状态。
+
+
+# 自定义事件
+子组件怎么跟父组件通信呢？这个时候 Vue 的自定义事件系统就派得上用场了。
+
+## 使用 v-on 绑定自定义事件
+每个 Vue 实例都实现了 事件接口，即：
+- 使用 `$on(eventName)` 监听事件
+- 使用 `$emit(eventName)` 触发事件
+
+# 给组件绑定原生事件
+有时候，你可能想在某个组件的根元素上监听一个原生事件。可以使用 .native 修饰 v-on。例如：
+```
+<my-component v-on:click.native="doTheThing"></my-component>
+```
+
+# .sync 修饰符
+> 2.3.0+
+
+在一些情况下，我们可能会需要对一个 prop 进行『双向绑定』。事实上，这正是 Vue 1.x 中的 .sync修饰符所提供的功能。当一个子组件改变了一个 prop 的值时，这个变化也会同步到父组件中所绑定的值。这很方便，但也会导致问题，因为它破坏了『单向数据流』的假设。由于子组件改变 prop 的代码和普通的状态改动代码毫无区别，当光看子组件的代码时，你完全不知道它何时悄悄地改变了父组件的状态。这在 debug 复杂结构的应用时会带来很高的维护成本。
+上面所说的正是我们在 2.0 中移除 .sync 的理由。但是在 2.0 发布之后的实际应用中，我们发现 .sync 还是有其适用之处，比如在开发可复用的组件库时。我们需要做的只是**让子组件改变父组件状态的代码更容易被区分**。
+
+从 2.3.0 起我们重新引入了 .sync 修饰符，但是这次它只是作为一个编译时的语法糖存在。它会被扩展为一个自动更新父组件属性的 v-on 侦听器。
+
+如下代码：
+```
+<comp :foo.sync="bar"></comp>
+```
+
+会被扩展为：
+```
+<comp :foo="bar" @update:foo="val => bar = val"></comp>
+```
+
+当子组件需要更新 foo 的值时，它需要显式地触发一个更新事件：
+```
+this.$emit('update:foo', newValue);
+```
+
+
+# 定制组件的 v-model
+> 2.2.0 新增
+
+
+# 组件命名约定
+在注册组件（或者 props）时，三种命名方式，随便用，都可以，无所谓， kebab-case、camelCase、PascalCase。
+但是在使用的时候，请使用 kebab-case 形式：
+```
+<!-- 在HTML模版中始终使用 kebab-case -->
+<kebab-cased-component></kebab-cased-component>
+<camel-cased-component></camel-cased-component>
+<pascal-cased-component></pascal-cased-component>
+```
+

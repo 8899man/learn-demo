@@ -748,7 +748,18 @@ table 使用自定义模板 需要 is 。
 
 父子组件，数据交互。
 
-HTML 特性不区分大小写。名字形式为 camelCase 的 prop 用作特性时，需要转为 kebab-case（短横线隔开）
+HTML 特性不区分大小写。名字形式为 camelCase 的 prop 用作特性时，需要转为 kebab-case（短横线隔开）。
+什么意思？
+```
+Vue.component('child', {
+  // camelCase in JavaScript
+  props: ['myMessage'],
+  template: '<span>{{ myMessage }}</span>'
+})
+
+<!-- kebab-case in HTML -->
+<child my-message="hello!"></child>
+```
 
 ### 动态 Props
 `<child v-bind:my-message="parentMsg"></child>` 可以动态传值。
@@ -842,6 +853,71 @@ Vue 实例实现了一个自定义事件接口，用于在组件树中通信。�
 
 
 不同于 DOM 事件，Vue 事件在冒泡过程中第一次触发回调之后自动停止冒泡，除非回调明确返回 `true`。
+
+### 子组件索引
+尽管有 props 和 events，但是有时仍然需要在 JavaScript 中直接访问子组件。为此可以使用 v-ref 为子组件指定一个索引 ID。
+
+
+## 使用 slot 分发内容
+
+### 编译作用域
+在深入内容分发 API 之前，我们先明确内容的编译作用域。假定模板为：
+```
+<child-component>
+  {{msg}}
+</child-component>
+```
+
+msg 应该绑定到父组件的数据，还是绑定到子组件的数据？答案是父组件。组件作用域简单地说是：
+
+**父组件模板的内容在父组件作用域内编译；子组件模板的内容在子组件作用域内编译**
+
+## 动态组件
+多个组件可以使用同一个挂载点，然后动态地在它们之间切换。使用保留的 <component> 元素，动态地绑定到它的 is 特性：
+```
+new Vue({
+  el: 'body',
+  data: {
+    currentView: 'home'
+  },
+  components: {
+    home: { /* ... */ },
+    posts: { /* ... */ },
+    archive: { /* ... */ }
+  }
+})
+
+<component :is="currentView">
+  <!-- 组件在 vm.currentview 变化时改变 -->
+</component>
+```
+
+### keep-alive
+如果把切换出去的组件保留在内存中，可以保留它的状态或避免重新渲染。为此可以添加一个 keep-alive 指令参数：
+```
+<component :is="currentView" keep-alive>
+  <!-- 非活动组件将被缓存 -->
+</component>
+```
+
+### activate 钩子
+在切换组件时，切入组件在切入前可能需要进行一些异步操作。为了控制组件切换这一时段，给切入组件添加 activate 钩子：
+```
+Vue.component('activate-example', {
+  activate: function (done) {
+    var self = this
+    loadDataAsync(function (data) {
+      self.someData = data
+      done()
+    })
+  }
+})
+```
+注意 activate 钩子只作用于动态组件切换或静态组件初始化渲染的过程中，不作用于使用实例方法手工插入的过程中。
+
+### transition-mode
+transition-mode 特性用于指定两个动态组件之间如何过渡。
+
 
 ### 异步组件
 Vue.js 允许将组件定义为一个工厂函数，动态地解析组件的定义。Vue.js 只在组件需要渲染时触发工厂函数，并且把结果缓存起来，用于后面的再次渲染。
