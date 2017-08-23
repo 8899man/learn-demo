@@ -195,6 +195,21 @@ Vue.config.keyCodes.f1 = 112
 # 构成组件
 在 Vue 中，父子组件的关系可以总结为 props down, events up。父组件通过 props 向下传递数据给子组件，子组件通过 events 给父组件发送消息。
 
+## camelCase vs. kebab-case
+HTML 特性是不区分大小写的。所以，当使用的不是字符串模版，camelCased (驼峰式) 命名的 prop 需要转换为相对应的 kebab-case (短横线隔开式) 命名：
+```
+Vue.component('child', {
+  // camelCase in JavaScript
+  props: ['myMessage'],
+  template: '<span>{{ myMessage }}</span>'
+})
+
+!-- kebab-case in HTML -->
+<child my-message="hello!"></child>
+```
+
+
+
 prop 是单向绑定的：当父组件的属性变化时，将传导给子组件，但是不会反过来。这是为了防止子组件无意修改了父组件的状态——这会让应用的数据流难以理解。
 另外，每次父组件更新时，子组件的所有 prop 都会更新为最新值。这意味着你不应该在子组件内部改变 prop。如果你这么做了，Vue 会在控制台给出警告。
 
@@ -247,9 +262,77 @@ this.$emit('update:foo', newValue);
 在注册组件（或者 props）时，三种命名方式，随便用，都可以，无所谓， kebab-case、camelCase、PascalCase。
 但是在使用的时候，请使用 kebab-case 形式：
 ```
+// 在组件定义中
+components: {
+  // 使用 kebab-case 形式注册
+  'kebab-cased-component': { /* ... */ },
+  // register using camelCase
+  'camelCasedComponent': { /* ... */ },
+  // register using PascalCase
+  'PascalCasedComponent': { /* ... */ }
+}
+
 <!-- 在HTML模版中始终使用 kebab-case -->
 <kebab-cased-component></kebab-cased-component>
 <camel-cased-component></camel-cased-component>
 <pascal-cased-component></pascal-cased-component>
 ```
+
+当使用字符串模式时，可以不受 HTML 的 case-insensitive 限制。这意味实际上在模版中，你可以使用下面的方式来引用你的组件：
+- kebab-case
+- camelCase 或 kebab-case 如果组件已经被定义为 camelCase
+- kebab-case 、 camelCase 或 PascalCase 如果组件已经被定义为 PascalCase 。
+
+可以看出，这里好像有一种大小关系在里面：
+PascalCase > camelCase > kebab-case
+
+```
+components: {
+  'kebab-cased-component': { /* ... */ },
+  camelCasedComponent: { /* ... */ },
+  PascalCasedComponent: { /* ... */ }
+}
+
+<kebab-cased-component></kebab-cased-component>
+<camel-cased-component></camel-cased-component>
+<camelCasedComponent></camelCasedComponent>
+<pascal-cased-component></pascal-cased-component>
+<pascalCasedComponent></pascalCasedComponent>
+<PascalCasedComponent></PascalCasedComponent>
+```
+
+这意味着 PascalCase 是最通用的 声明约定 而 kebab-case 是最通用的 使用约定。
+
+**关于命名约定以及kebab-cae，camelCase, pascalCase 的个人理解：**
+```
+//组件
+Vue.component('ButtonCounter', {
+  template: '<button v-on:click="incrementCounter">{{ counter }}</button>',
+});
+```
+以这样一个组件为例，在 html 中使用的时候，只能用 kebab-case 形式：
+```
+<button-counter></button-couter>
+```
+但是如果使用字符串模板时，则不受 HTML 的 case-insensitive 限制。什么意思呢？
+同样对于上面定义的那个组件，在字符串模板中，可以有三种调用方式：
+```
+new Vue({
+  components: {
+    yu: {
+      template: '<button-counter></button-counter>'
+    },
+    sp: {
+      template: '<buttonCounter></buttonCounter>'
+    },
+    oq: {
+      template: '<ButtonCounter></ButtonCounter>'
+    }
+
+  }
+
+});
+
+
+
 
