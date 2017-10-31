@@ -857,7 +857,6 @@ Vue 实例实现了一个自定义事件接口，用于在组件树中通信。�
 ### 子组件索引
 尽管有 props 和 events，但是有时仍然需要在 JavaScript 中直接访问子组件。为此可以使用 v-ref 为子组件指定一个索引 ID。
 
-
 ## 使用 slot 分发内容
 
 ### 编译作用域
@@ -1079,7 +1078,6 @@ Vue.directive('my-directive', function (value) {
 - descriptor: 一个对象，包含指令的解析结果
 
 
-
 ### 对象字面量
 
 如果指令需要多个值，可以传入一个 JavaScript 对象字面量。记住，指令可以使用任意合法的 JavaScript 表达式：
@@ -1095,7 +1093,10 @@ Vue.directive('demo', function (value) {
 
 ### 字面量修饰符
 
+当指令使用字面修饰符，**值将按普通字符串处理并传递给update方法，update方法只调用一次，因为普通字符串不能影响数据变化**。
+
 `<div v-demo.literal="foo bar baz">`
+
 
 ### params
 
@@ -1126,7 +1127,7 @@ Vue.directive('demo', function (value) {
 
 过滤器函数可以接收任意数量的参数：
 
-### 双向过滤器
+### 双向过滤器(read，write)
 目前我们使用过滤器都是在把来自模型的值显示在视图之前转换它。不过也可以定义一个过滤器，在把来自视图（<input> 元素）的值写回模型之前转化它：
 ```
 Vue.filter('currencyDisplay', {
@@ -1172,10 +1173,10 @@ var component = new Component() // -> "hello from mixin!"
 
 
 ### 选项合并
-当混合对象与组件包含同名选项时，这些选项将以适当的策略合并。例如，同名钩子函数被并入一个数组，因而都会被调用。另外，混合的钩子将在组件自己的钩子之前调用。
+当混合对象与组件包含同名选项时，这些选项将以 **适当的策略** 合并。例如，同名钩子函数被并入一个数组，因而都会被调用。另外，混合的钩子将在组件自己的钩子之前调用。
 
 
-值为对象的选项，如 methods, components 和 directives 将合并到同一个对象内。如果键冲突则组件的选项优先。
+值为对象的选项，如 methods, components 和 directives 将合并到同一个对象内。**如果键冲突则组件的选项优先。**
 
 
 注意 Vue.extend() 使用同样的合并策略。
@@ -1251,13 +1252,6 @@ var VueRouter = require('vue-router')
 // 不要忘了调用此方法
 Vue.use(VueRouter)
 ```
-
-
-
-
-
-
-
 
 
 
