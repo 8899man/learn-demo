@@ -50,6 +50,12 @@ new Vue({
 # 实例生命周期
 在实例生命周期的不同阶段调用。如 created、 mounted、 updated、 destroyed 。
 
+> 不要在选项属性或回调上使用箭头函数，比如
+> created: () => console.log(this.a)
+> 或
+> vm.$watch('a', newValue => this.myMethod())
+> 因为箭头函数是和父级上下文绑定在一起的，this不会是如你所预期的Vue实例。
+
 # 生命周期图示
 ![vue2生命周期](./vue2-lifecycle.png)
 
