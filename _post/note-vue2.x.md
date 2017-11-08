@@ -222,6 +222,42 @@ prop 是单向绑定的：当父组件的属性变化时，将传导给子组件
 
 *注意在 JavaScript 中对象和数组是引用类型，指向同一个内存空间，如果 prop 是一个对象或数组，在子组件内部改变它会影响父组件的状态。*
 
+## Prop 验证
+我们可以为组件的 prop 指定验证规则。如果传入的数据不符合要求，Vue 会发出警告。这对于开发给他人使用的组件非常有用。
+```
+Vue.component('example', {
+  props: {
+    // 数组/对象的默认值应当由一个工厂函数返回
+    propE: {
+      type: Object,
+      default: function() {
+        return { message: 'hello'}
+      }
+    },
+    // 自定义验证函数
+    propF: {
+      validator: function(value) {
+        return value > 10
+      }
+    }
+  }
+})
+```
+关于 type 的值，vue2.x 中新增了 Symbol 。
+
+*需要说明的是：* 当 prop 验证失败，Vue 会抛出警告 (如果使用的是开发版本)。注意 prop 会在组件实例创建之前进行校验，所以在 default 或 validator 函数里，诸如 data、computed 或 methods 等实例属性还无法使用。
+
+## 非 Prop 特性
+所谓非 prop 特性，就是指它可以直接传入组件，而不需要定义相应的 prop 。
+尽管为组件定义明确的 prop 是推荐的传参方式，组件的作者却并不是总能预见到组件被使用的场景。*所以，组件可以接收任意传入的特性，这些特性都会被添加到组件的根元素上。*
+例如，假设我们使用了第三方组件 bs-date-input ，它包含一个 Bootstrap 插件，该插件需要在 input 上添加 data-3d-date-picker 这个特性。这时可以把特性直接添加到组件上（不需要实现定义 prop）：
+```
+<bs-date-input data-3d-date-picker="true"></bs-date-input>
+```
+添加属性 data-3d-date-picker="true" 之后，它会被自动添加到 bs-date-input 的根元素上。
+
+## 替换/合并现有的特性
+对于多数特性来说，传递给组件的值会覆盖组件本身设定的值。即例如传递 type="large" 将会覆盖 type="date" 且有可能破坏该组件！所幸我们对待 class 和 style 特性会更聪明一些，这两个特性的值都会做合并(merge)操作，让最终生成的值为：form-control date-picker-theme-dark
 
 # 自定义事件
 子组件怎么跟父组件通信呢？这个时候 Vue 的自定义事件系统就派得上用场了。
@@ -255,10 +291,28 @@ prop 是单向绑定的：当父组件的属性变化时，将传导给子组件
 <comp :foo="bar" @update:foo="val => bar = val"></comp>
 ```
 
-当子组件需要更新 foo 的值时，它需要显式地触发一个更新事件：
+**当子组件需要更新 foo 的值时，它需要显式地触发一个更新事件：**
 ```
 this.$emit('update:foo', newValue);
 ```
+
+
+# 使用自定义事件的表单输入组件
+自定义事件可以用来创建自定义的表单输入组件，使用 v-model 来进行数据双向绑定。
+要牢记
+要牢记
+要牢记：
+```
+<input v-model="something">
+```
+这不过是一下示例的语法糖：
+```
+<input
+  v-bind:value="something"
+  v-on:input="something = $event.target.value">
+```
+
+
 
 
 # 定制组件的 v-model

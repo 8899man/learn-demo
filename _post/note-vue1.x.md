@@ -830,6 +830,7 @@ Boolean
 Function
 Object
 Array
+
 type 也可以是一个自定义构造器，使用 instanceof 检测。
 
 当 prop 验证失败了，Vue 将拒绝在子组件上设置此值，如果使用的是开发版本会抛出一条警告。
