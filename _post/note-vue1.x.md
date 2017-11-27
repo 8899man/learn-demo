@@ -7,24 +7,26 @@ vue的实例中的属性还有：data methods
 v-if 特性被称为**指令**。指令带有前缀v- 。
 也有一些其它指令，每个都有特殊的功能。例如 v-for 指令用于显示数组元素，v-bind 指令用于绑定 HTML 特性。
 
+
 vue.js 通过 v-on 完成事件处理与绑定，比如为一个button绑定click事件，我们就可以这么写：
 ```
 <button v-on:click="doSomething">doSomething</button>
 ```
 也可以缩写：
 ```
-<button @click="doSomething"
->doSomething</button>
+<button @click="doSomething">doSomething</button>
 ```
 
+```
 var vm = new Vue({
     //选项
 })
+```
 一个Vue实例其实正是一个 MVVM 模式中所描述的 ViewModel 因此在文档中经常会使用 vm 这个变量名。
 
-可以扩展 Vue 构造器，从而用预定义选项创建可复用的组件构造器。
+可以 **扩展 Vue 构造器**，从而用预定义选项创建可复用的组件构造器。
 ```
-var myComponent = Vue.extend({
+var MyComponent = Vue.extend({
     //扩展选项
 })
 
@@ -67,9 +69,9 @@ vm.$watch('a', function (newVal, oldVal) {
 这个是什么意思呢？
 **就是说：**一个 vue 的实例中的data字段中的属性，可以直接被vue的实例代理。
 vm.a 其实就是 vue实例中的data字段中的a属性的值。
-那么，如果要直接调用vue实例的字段属性呢？vue.data能调用到吗？
+那么，如果要直接调用vue实例的字段属性呢？vue.data 这种写法能调用到吗？
 答案是不能。
-应该用 vm.$data， 同理，vue实例的其他字段属性也是这样来调用，只有数据属性是被直接代理到vue的实例上了。
+应该用 vm.$data， 同理，vue实例的其他字段属性也是这样来调用，**只有数据属性是被直接代理到vue的实例上了。** 例如 vm.a。
 
 ## Vue 实例的生命周期以及钩子
 Vue 实例在创建时有一系列初始化步骤——例如，它需要建立数据观察，编译模板，创建必要的数据绑定。在此过程中，它也将调用一些**生命周期钩子**，给自定义逻辑提供运行机会。例如 created 钩子在实例创建后调用。
@@ -855,7 +857,8 @@ Vue 实例实现了一个自定义事件接口，用于在组件树中通信。�
 不同于 DOM 事件，Vue 事件在冒泡过程中第一次触发回调之后自动停止冒泡，除非回调明确返回 `true`。
 
 ### 子组件索引
-尽管有 props 和 events，但是有时仍然需要在 JavaScript 中直接访问子组件。为此可以使用 v-ref 为子组件指定一个索引 ID。
+尽管有 props 和 events，但是有时仍然需要在 JavaScript 中直接访问子组件。为此可以使用 v-
+ 为子组件指定一个索引 ID。
 
 
 ## 使用 slot 分发内容
