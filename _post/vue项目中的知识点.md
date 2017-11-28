@@ -76,7 +76,8 @@ computed: {
 7.
 为了保证安全性，我司现在后台所有token有效期(Expires/Max-Age)都是Session，就是当浏览器关闭了就丢失了。重新打开游览器都需要重新登录验证，后端也会在每周固定一个时间点重新刷新token，让后台用户全部重新登录一次，确保后台用户不会因为电脑遗失或者其它原因被人随意使用账号。
 
-8.不同路由对应同一个页面的视图刷新问题？
+8.
+不同路由对应同一个页面的视图刷新问题？
 ```
 { path: 'create', component: PostCreate, name: '发表文章' },
 { path: 'edit/:Id(\\d+)', component: PostCreate, name: '编辑文章' }
