@@ -267,6 +267,151 @@ Action 类似于 mutation，不同在于：
 - Action 提交的是 mutation，而不是直接变更状态
 - Action 可以包含任意异步操作
 
+Action 函数接受一个与 store 实例具有相同方法和属性的 context 对象，（与store实例具有相同方法和属性的context对象）因此你可以调用 `context.commit` 提交一个 mutation，或者通过 `context.state` 和 `context.getters` 来获取 state 和 getters。
+当我们在之后介绍到 Modules 时，你就知道 context 对象为什么不是 store 实例本身了。
+
+实践中，我们会经常用到 ES2015 的参数结构来简化代码（特别是我们需要调用 `commit` 很多次的调用）：
+```
+actions: {
+  increment ({ commit }) {
+    commit('increment')
+  }
+}
+```
+
+【终于明白了这个地方的 { commit } 是什么意思了】
+
+## 分发 Action
+Action 通过 `store.dispatch` 方法触发：
+```
+store.dispatch('increment')
+```
+
+【为什么不直接分发 mutation？mutation必须是同步执行，Action就不受约束！我们可以在 action 内部执行异步操作】
+
+Actions 支持同样的载荷方式和对象方式进行分发：
+```
+// 以载荷形式分发
+store.dispatch('incrementAsync', {
+  amount: 10
+})
+
+// 以对象形式分发
+store.dispatch({
+  type: 'incrementAsync',
+  amount: 10
+})
+```
+
+来看一个更加实际的购物车示例，涉及到 **调用异步API** 和 **分发多重mutation**
+```
+actions: {
+  checkout({ commit, state }, products) {
+    // 把当前购物车的物品备份起来
+    const saveCartItems = [...state.cart.added]
+    // 发出结账请求，然后乐观地清空购物车
+    commit(types.CHECKOUT_REQUEST)
+    // 购物 API 接受一个成功回调和一个失败回调
+    shop.buyProducts(
+      products,
+      // 成功操作
+      () => commit(types.CHECKOUT_SUCCESS),
+      // 失败操作
+      () => commit(types.CHECKOUT_FAILURE, savedCartItems)
+    )
+  }
+}
+```
+
+
+## 【在组件中分发 Action】
+你在组件中使用 `this.$store.dispatch('xxx')` 分发 action，或者使用 `mapActions` 辅助函数将组件的 methods 映射为 `store.dispatch` 调用（需要先在根节点注入 `store`）
+```
+import { mapActions } from 'vuex'
+
+export default {
+  // ...
+  methods: {
+    ...mapActions([
+      'increment', // 将 `this.increment()` 映射为 `this.$store.dispatch('increment')`
+
+      // `mapActinos` 也支持载荷：
+      'incrementBy' // 将 `this.incrementBy(amount)` 映射为 `this.$store.dispatch('incrementBy', amount)`
+    ]),
+    ...mapActions({
+      add: 'increment' // 将 `this.add()` 映射为 `this.$store.dispatch('increment')`
+    })
+  }
+}
+```
+
+## 【组合 Action】
+Action 通常是异步的、我们如何才能组合多个 action、以处理更加复杂的异步流程？
+首先，你需要明白 `store.dispatch` 可以处理被触发的 action 的处理函数返回的 Promise，并且 `store.dispatch` 仍旧返回 Promise：
+```
+actions: {
+  actionA({ commit }) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        commit('someMutation')
+        resolve()
+      }, 1000)
+    })
+  }
+}
+```
+现在你可以：
+```
+store.dispatch('actionA').then(() => {
+  // ...
+})
+```
+
+
+在另外一个 action 中也可以调用别的 action：
+```
+actions: {
+  // ...
+  actionB ({ dispatch, commit }) {
+    return dispatch('actionA').then(() => {
+      commit('someOtherMutation')
+    })
+  }
+}
+```
+
+最后，如果我们利用 async/await ，我们可以如下组合 action 。
+
+# Module
+由于使用单一状态树，应用的所有状态会几种到一个比较大的对象。当应用变得非常复杂时，store 对象就有可能变得相当臃肿。
+
+Vuex允许我们将 store 分割成 **模块(module)**。每个模块拥有自己的 state、mutation、action、getter、甚至是嵌套子模块——从上至下进行同样方式的分割。
+
+## 【模块的局部状态】
+对于模块内部的 mutation 和 getter ，接收的第一个参数(state)是 **模块的布局状态对象**。
+
+同样，对于模块内部的 action，
+【我们知道，Action 函数接受一个与 store 实例具有相同方法和属性的 context 对象】
+局部状态通过 context.state 暴露出来，根节点状态则为 context.rootState。
+```
+actions: {
+  incrementIfOddOnRootSum({ state, commit, rootState}) {
+    if((state.count + rootState.count) % 2 === 1) {
+      commit('increment')
+    }
+  }
+}
+```
+
+对于模块内部的 getter，根节点状态会作为第三个参数暴露出来：
+```
+getters: {
+  sumWithRootCount(state,getters,rootState) {
+    return state.count + rootState.count
+  }
+}
+```
+
 
 
 
