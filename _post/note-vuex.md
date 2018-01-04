@@ -404,6 +404,7 @@ actions: {
 ```
 
 对于模块内部的 getter，根节点状态会作为第三个参数暴露出来：
+【第一个参数是模块的布局状态对象，第二个参数是getters对象】
 ```
 getters: {
   sumWithRootCount(state,getters,rootState) {
@@ -411,6 +412,80 @@ getters: {
   }
 }
 ```
+
+
+## 【命名空间】
+默认情况下，模块内部的 action、mutation 和 getter是注册在 **全局命名空间** 的 —— 这样使得多个模块能够对同一 mutation 或 action 做出响应。
+
+如果希望你的模块具有更高的封装度和复用性，你可以通过添加 `namespaced: true` 的方式使其成为命名空间模块。当模块被注册后，它的所有 getter、action及mutation都会自动根据模块注册的路径调整命名。
+
+
+启用了命名空间的 getter 和 action 会收到局部化的 `getter`，`dispatch` 和 `commit`。换言之，你在使用模块内容(module assets)时不需要在同一模块内额外添加空间名前缀。更改`namespaced`属性后不需要修改模块内的代码。
+
+##【在命名空间模块内访问全局内容（Global Assets）】
+如果你希望使用全局state和getter，`rootState`和`rootGetter`会作为第三和第四参数传入`getter`，也会通过`context`对象的属性传入action。
+
+若需要在全局命名空间内分发action或提交mutation，将`{root:true}`作为第三个参数传给`dispatch`或`commit`即可。
+
+## 【带命名空间的绑定函数】
+当使用`mapState`，`mapGetters`，`mapActions`和`mapMutaions`这些函数来绑定命名空间模块时，写起来可能比较繁琐：
+```
+...mapState({
+  a: state => state.come.nested.module.a
+})
+...mapActions([
+  'some/nested/module/foo'
+])
+```
+对于这种情况，你可以将模块的空间名称字符串作为第一个参数传递给上述函数，这样所有绑定都会自动将该模块作为上下文。于是上面的例子可以简化为：
+```
+...mapState('some/nested/module', {
+  a: state => state.a
+})
+...mapActions('some/nested/module', [
+  'foo',
+  'bar'
+])
+```
+
+而且，你可以通过使用 `createNamespacedHelpers` 创建基于某个命名空间辅助函数。它返回一个函数，对象里有新的绑定在给定命名空间值上的组件绑定辅助函数：
+```
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapState, mapActions } = createNamespacedHelpers('some/nested/module')
+
+// 现在这两个辅助函数mapState，mapActions 将在 some/nested/module 中查找
+```
+
+## 【给插件开发者的注意事项】
+如果你开发的插件提供了模块并允许用户将其添加到 Vuex store，可能需要考虑模块的空间名称问题。对于这种情况。你可以通过插件的参数对象来允许用户指定空间名称
+
+##【模块动态注册】
+在 store 创建之后，你可以使用 `store.registerModule` 方法注册模块。
+
+之后就可以通过 `store.state.myModule` 和 `store.state.nested.myModule` 访问模块的状态。
+
+模块动态注册功能使得其他 Vue 插件可以通过在 store 中附加新模块的方式来使用 Vuex 管理状态。例如，vuex-router-sync 插件就是通过动态注册模块将 vue-router 和 vuex 结合在一起，实现应用的路由状态管理。
+
+你也可以使用 `store.unregisterModule(moduleName)` 来动态卸载模块。注意，你不能使用此方法卸载静态模块（即创建store时声明的模块）
+
+##【模块重用】
+如果我们使用一个纯对象来声明模块的状态，那么这个状态对象会通过引用被共享，导致状态对象被修改时 store 或模块间数据互相污染的问题。
+
+实际上这和 vue 组件内的data是同样的问题。因此解决办法也是相同的——使用一个函数来声明模块状态（仅 2.3.0+ 支持）：
+```
+const MyReusableModule = {
+  state() {
+    return {
+      foo: 'bar'
+    }
+  }
+}
+```
+
+
+
+
 
 
 
