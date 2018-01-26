@@ -12,7 +12,6 @@ const router = new VueRouter({
 new Vue({
   router
 })
-
 ```
 
 # 动态路由匹配
