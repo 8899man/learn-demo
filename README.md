@@ -6,7 +6,5 @@ DEMO
 
 [谷歌插件的开发](./chrome_devtool)
 
-[vue-demo](./vue)
-
 [js 幻灯片](./js_slide)
 
