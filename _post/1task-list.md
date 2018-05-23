@@ -9,7 +9,8 @@
 
 3.结合 [阮一峰老师的 mock 测试](http://www.ruanyifeng.com/blog/2015/12/a-mocha-tutorial-of-examples.html) 和 [nodejs lesson6](https://github.com/alsotang/node-lessons/tree/master/lesson6) 可以写一篇 mock 的文章
 
-
+# 关于前端跨域调试【重点】
+[关于前端跨域调试](./note-front-proxy.md)
 
 
 
