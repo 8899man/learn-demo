@@ -3,6 +3,12 @@
 ## HTML
 
 ## CSS
+1、使用css追踪用户是否点击某个链接
+```
+#link2:active::after {
+  content: url("track.php?action=link2_alicked");
+}
+```
 
 ## JavaScript
 

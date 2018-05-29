@@ -132,3 +132,11 @@ ssh 连不上：service iptables stop
 ssh 关机命令：shutdown -h now 立刻关机（root用户使用）
 ```
 
+19、移动端 按钮点击效果
+看来在iOS系统的移动设备中，需要在按钮元素或 body/html 上绑定一个 touchstart 事件才能激活 :active 状态。
+```
+document.body.addEventListener('touchstart', function () {
+    //...空函数即可
+});  
+```
+

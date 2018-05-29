@@ -19,6 +19,8 @@
 
 4.jquery中的param,serialize以及js中的 urlencode urlencodeComponent urldecode escape decodeURIComponent 详细区别介绍
 
+5.[clipboard.js](https://clipboardjs.com/)
+
 
 # NBA
 
