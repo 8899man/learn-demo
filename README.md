@@ -1,5 +1,7 @@
 DEMO
 --
+[前端技巧](./front-skill)
+
 [学习过程中的一些随手笔记](./_post)
 
 [jQuery实现轮播器](./Imageroll)
