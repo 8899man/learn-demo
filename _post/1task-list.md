@@ -1,6 +1,6 @@
 博客整理一个 demo 的栏目，类似于 weblog。
 
-
+-2 我觉得 javascript 中的 delete 挺不错的，有空整理一下。
 
 -1. https://juejin.im/post/5a1e7e7e51882503eb4b0a80
 
