@@ -29,11 +29,17 @@
 4、vue-loader 中有一个自定义模块，挺有意思的。
 
 5、关于vue最后渲染出来的class名字的问题
-在vue-loader.conf.js里面可配置
+在vue-loader.conf.js里面可配置localIdentName
 ```
 cssModules: {
-  localIndetName: '[path]-[name]-[hash:base64:5]'
+  localIdentName: '[path]-[name]-[hash:base64:5]',
+  camelCase: true
 }
 ```
+camelCase:true是什么意思呢。就是让我们最后生成的class名是首字母小写的驼峰，而不是短横线链接。
+我们知道再javascript中，如果是短横线连接的变量名，使用的时候需要用中括号扩起来，而不能用默认的.来获取它的值，而驼峰的变量名则没有这个限制。
+
+
+
 
 
