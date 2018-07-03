@@ -39,6 +39,99 @@ cssModules: {
 camelCase:true是什么意思呢。就是让我们最后生成的class名是首字母小写的驼峰，而不是短横线链接。
 我们知道再javascript中，如果是短横线连接的变量名，使用的时候需要用中括号扩起来，而不能用默认的.来获取它的值，而驼峰的变量名则没有这个限制。
 
+上面这个 vue-loader 的配置是针对 .vue 文件中的样式的配置，最终生成出来的class名字是 【client-layout--header-2AE8s_0】
+
+6、那么在单一的 .styl 文件中的样式class名如何设置呢，这个需要在 webpack 中来设置。
+```
+rules: [
+  {
+    test: /\.styl/,
+    use: [
+      'vue-style-loader',
+      'css-loader',
+      {
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: true
+        }
+      },
+      'stylus-loader'
+    ]
+  }
+]
+```
+
+将 `css-loader` 改为：
+
+```
+rules: [
+  {
+    test: /\.styl/,
+    use: [
+      'vue-style-loader',
+      {
+        loader: 'css-loader',
+        options: {
+          module: true,
+          localIdentName: isDev ? '[path]-[name]-[hash:base64:5]' : '[hash:base64:5]'
+        }
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: true
+        }
+      },
+      'stylus-loader'
+    ]
+  }
+]
+```
+
+不过，还是建议，使用上面最正常的 css-loader 就好了。
+
+6、webpack 中 eslint 的配置
+```
+module: {
+  rules: [
+    {
+      test: /\.(vue|js|jsx)$/,
+      loader: 'eslint-loader',
+      exclude: /node_modules/,
+      enforce: 'pre'
+    }
+  ]
+}
+```
+
+`enforce: 'pre'` 就是提前处理，比如说 vue 文件，先用 eslint-loader 来检测，如果代码格式不合格，就不用进行后面 vue-loader 的操作了。
+
+7、editorconfig 用来规范我们编辑器的配置。
+在项目目录下新建 `.editorconfig` 文件。
+```
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final-newline = true
+trim_trailing_whitespace = true
+```
+
+8、git 提交代码之前先检测代码是否满足 eslint 规则
+```
+npm i husky -D
+
+然后在 package.json 里面的 scripts 里面添加一个配置：
+"precommit": "npm run lint-fix",
+"lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue client/"
+```
+在 git commit 之前会自动执行 precommit 。
+
+9、
+
 
 
 
