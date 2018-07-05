@@ -130,7 +130,7 @@ npm i husky -D
 ```
 在 git commit 之前会自动执行 precommit 。
 
-9、
+9、runtime-only 里面无法使用 template 标签，所以我们看到的都是使用 render=》app的形式。
 
 
 
