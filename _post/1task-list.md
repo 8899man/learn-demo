@@ -1,4 +1,8 @@
-博客整理一个 demo 的栏目，类似于 weblog。
+【博客整理一个 demo 的栏目，类似于 weblog。】
+
+-4 https://github.com/aooy/blog/issues/2
+
+-3 http://hcysun.me/  这个人的博客不错
 
 -2 我觉得 javascript 中的 delete 挺不错的，有空整理一下。
 

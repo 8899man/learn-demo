@@ -36,4 +36,33 @@ typeof yu == 'undefined'  typeof yu === 'undefined'
 3、获取select元素中的option
 var country = cc.options[cc.selectedIndex].dataset.country;
 
+4、一个简单的日期format —— 来源微信小程序
+```
+const formatTime = date => {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+  const second = date.getSeconds()
+
+  return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
+}
+
+const formatNumber = n => {
+  n = n.toString()
+  return n[1] ? n : '0' + n
+}
+
+module.exports = {
+  formatTime: formatTime
+}
+```
+
+
+## Linux
+```
+linux ssh 连不上（service iptables stop）
+```
+
 
