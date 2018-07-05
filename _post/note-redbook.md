@@ -192,10 +192,43 @@ for(var propName in window) {
 ```
 ECMAScript 对象的属性没有顺序。因此，通过 for-in 循环输出的属性名的顺序是不可预测的。具体来讲，所有属性都会被返回一次，但返回的先后次序可能会因浏览器而异。
 
+35、break和continue语句都可以与label语句联合使用，从而返回代码中特定的位置。这种联合使用的情况多发生在循环嵌套的情况下，如下面的例子所示：
+```
+var num = 0;
+outermost:
+for(var i=0; i<10; i++) {
+    for(var j=0; j<10; j++) {
+        if(i == 5 && j == 5) {
+            break outermost;
+        }
+        num++
+    }
+}
+alert(num);  // 55
+```
+这个内部循环中的break语句带另一个参数：要返回到的标签。添加这个标签的结果将导致break语句不仅会退出内部的for语句，而且也会退出外部的for语句。所以，当i和j都等于5时，num的值正好是55。而且break退出了全部循环。
+如果没有这个`outermost`，结果是95。
 
+同样，continue语句也可以像这样与label语句联用，来看例子：
+```
+var num = 0;
+outermost:
+for(var i=0; i<10; i++) {
+    for(var j=0; j<10; j++) {
+        if(i==5 && j==5) {
+            continue outermost;
+        }
+        num++
+    }
+}
+alert(num);  // 95
+```
+如果没有这个`outermost`，结果是99。
 
+36、【没有重载】
+ECMAScript函数不能像传统意义上那样实现重载。但是，可以通过检查传入函数中参数的类型和数量并作出不同的反应，可以模仿方法的重载。
 
-
+37、next 第四章
 
 
 
