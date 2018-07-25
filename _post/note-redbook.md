@@ -228,7 +228,57 @@ alert(num);  // 95
 36、【没有重载】
 ECMAScript函数不能像传统意义上那样实现重载。但是，可以通过检查传入函数中参数的类型和数量并作出不同的反应，可以模仿方法的重载。
 
-37、next 第四章
+37、ECMAScript 中所有函数的参数都是按值传递的。也就是说，把函数外部的值复制给函数内部的参数，就和把值从一个变量复制到另一个变量一样。基本类型值的传递如同基本类型变量的复制一样，而引用类型值的传递，则如同引用类型变量的【复制】(理解这个复制的意思很重要)一样。有不少开发人员在这一点上可能会感到困惑，因为访问变量有按值和按引用两种方式，而参数只能按值传递。
+
+38、我们来看一个函数传递引用类型参数的例子：
+
+```javascript
+function setName(obj) {
+  obj.name = 'yu'
+}
+var person = new Object()
+setName(person)
+alert(person.name)  // yu
+```
+
+person变量传递到setName()函数中之后就被【复制】给了obj。在这个函数内部，obj和person引用的是同一个对象。于是，当在函数内部位obj添加name属性后，函数外部的person也将有所反映。
+
+【那么有人就会觉得这个是按引用传递了。我们用一个例子来反推】
+
+```javascript
+function setName(obj) {
+    obj.name = 'yu'
+    obj = new Object()
+    obj.name = 'yyf'
+}
+var person = new Object()
+setName(person)
+alert(person.name)  // yu
+```
+
+如果person是按引用传递的，那么person就会自动被修改为指向其name属性值为“yyf“的新对象。但是，当接下来再访问person.name时，显示的值仍然是“yu”。这说明即使再函数内部修改了参数的值，但原始的引用仍然保持不变。实际上，当在函数内部重写obj时，这个变量引用的就是一个局部对象了。而这个局部对象会在函数执行完毕后立即被销毁。
+
+【可以把ECMAScript函数的参数想象成局部变量】
+
+39、延长作用域链
+
+Try-catch语句的catch块
+
+with语句
+
+```
+function buildUrl() {
+    var qs = '?debug=true';
+    with(location) {
+        var url = href + qs;
+    }
+    return url
+}
+```
+
+我们可以看到在with外面是可以return url 的。
+
+
 
 # 第 4 章 变量、作用域和内存问题
 
