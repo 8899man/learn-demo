@@ -1,5 +1,7 @@
 【博客整理一个 demo 的栏目，类似于 weblog。】
 
+-5 [黄奕老师的手记](http://www.imooc.com/t/3017249#Article)
+
 -4 https://github.com/aooy/blog/issues/2
 
 -3 http://hcysun.me/  这个人的博客不错
