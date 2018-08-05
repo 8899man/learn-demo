@@ -132,6 +132,251 @@ npm i husky -D
 
 9、runtime-only 里面无法使用 template 标签，所以我们看到的都是使用 `render => app` 的形式。
 
+10、在Vue的options里面，我们可以定义watch对象，来监听某些值的改变，随着vue组件的销毁，options里面定义的内容也会被销毁。
+但是，如果我们是使用$watch的方式来声明的watch的话。它会返回一个unWatch方法，调用这个方法可以销毁相应的watch方法。
+```
+const unWatch = app.$watch('text', (newText, oldText) => {
+  console.log(`${newText} : ${oldText}`)
+})
+setTimeout(() => {
+  unWatch()
+}, 2000)
+```
+
+11、$on与$once的区别
+```
+app.$once('test', (a, b) => {
+  console.log(`test emited ${a} ${b}`)
+})
+setInterval(() => {
+  app.$emit('test', 1, 2)
+}, 1000)
+```
+因为使用的是$once所以，只会执行一次。
+
+
+12、$forceUpdate
+强制组件渲染。比如说data里面有一个obj空对象，现在对obj.a做一些修改，在模版中，{{obj.a}}是不是有变化的，如果我们修改了obj.a，然后调用this.$forceUpdate方法，才能看到变化。
+当然，我们是不建议使用这个方法的。因为你明明可以有更优雅的做法来实现。
+如果使用不当，会造成我们的应用一直的渲染，影响性能。
+
+13、
+```
+i = 0;
+this.$set(app.obj, 'a', i);
+```
+
+14、vue声明周期函数
+new一个vue实例的时候，会触发beforeCreate和created。
+挂载到DOM的时候，会触发beforeMount和mounted。
+有数据改变时会触发beforeUpdate和updated。
+activated和deactivated跟组件的keep-alive有关。
+
+beforeMount的时候，此时的this.$el是我们选择的html中的dom元素。
+mounted的时候，此时的this.$el是我们vue实例中的template对象。
+
+beforeMount和mounted在服务端渲染时不会被调用。
+
+15、render,renderError
+```
+render(h) {
+  return h('div', {}, this.text)
+}
+renderError(h, err) {
+  return h('div', {}, err.stack)
+}
+render的时候出现错误，则会触发renderError方法。 
+```
+
+16、errorCaptured
+与renderError只能在开发环境使用不同的是，errorCaptured能在捕捉成产环境的错误，用法与renderError类似。
+errorCaptured会向上冒泡，父组件能接受到子组件传递的错误。
+
+17、相较于methods里面的方法，每次渲染都会重新计算，computed则是由缓存的，以来的数据不变，则使用缓存，不重新计算，性能会好一些。
+
+18、其实watch有更多的属性。
+```
+watch: {
+  obj: {
+    handler() {
+      console.log('obj.a changed')
+    },
+    immediate: true,
+    deep: true
+  }
+}
+```
+这样的话，修改obj里面属性的值，也会触发这个watch。
+当然，你还可以这样：
+```
+watch: {
+  'obj.a': {
+    handler() {
+      console.log('obj.a changed')
+    },
+    immediate: true
+  }
+}
+```
+这个时候不需要`deep:true`，你修改obj.a就能触发这个watch。
+
+19、vue指令
+v-once
+v-model [.lazy, .number, .trim]
+
+20、一个vue组件，我们可以认为是一个类，类的命名规范，首字母大写。
+
+21、Vue.extend
+主要为了便于扩展单文件组件
+```
+const CompVue = Vue.extend(component)
+new CompVue({
+  el: '#root',
+  propsData: {
+    propOne: 'xxx'
+  },
+  data: {
+    text: 123
+  }
+})
+```
+
+22、slot，插槽
+具名插槽
+```
+<div class="header">
+  <slot name="header"></slot>
+</div>
+<div class="bdoy">
+  <slot name="body"></slot>
+</div>
+```
+使用的时候
+```
+<comp>
+  <span slot="header">this is header</span>
+  <span slot="body">this is body</span>
+</comp>
+```
+
+23、scope,slot-scope,作用域插槽
+```
+<slot value="456"></slot>
+```
+使用的时候
+```
+<span slot-scope="props">{{props.value}}</span>
+```
+当然，也可以使用更直接的方式：
+```
+<slot :value="123"></slot>
+```
+
+24、依赖注入（provide,reject）
+provide默认不是响应式的。
+```
+provide() {
+  return {
+    _this: this,
+    value: this.value
+  }
+}
+```
+如何做成响应式的：
+```
+provide() {
+  const data = {}
+  Object.defineProperty(data, 'value', {
+    get() {
+      return this.value,
+      enumerable: true
+    }
+  })
+  return {
+    data
+  }
+}
+```
+
+25、vue的render
+其实template最终就是用render来渲染的，不写template，直接写render也是一样的。
+```
+render(createelement) {
+  return createElement(
+    'comp-one',
+    {
+      ref: 'comp'
+    },
+    [
+      createElement('span', {
+        ref: 'span'
+      }, this.value)
+    ]
+  )
+}
+```
+
+```
+render() {
+  return createElement(div, {
+    style: this.style,
+    attrs: {
+      id: 'test-id'
+    }
+  }, [
+    this.$slots.header,
+    this.props1
+  ])
+}
+```
+
+```
+render(createelement) {
+  return createElement(
+    'comp-one',
+    {
+      ref: 'comp',
+      props: {
+        props1: this.value
+      },
+      on: {
+        click: () => {
+          console.log('clicked')
+        }
+      },
+      on: {
+        dbclick: this.handleDbClick
+      }
+    },
+    [
+      createElement('span', {
+        ref: 'span',
+        slot: 'header',
+      }, this.value)
+    ]
+  )
+}
+```
+
+26、vue-router
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
