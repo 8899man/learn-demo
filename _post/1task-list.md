@@ -25,6 +25,8 @@
 
 5.[clipboard.js](https://clipboardjs.com/)
 
+6.[前端验证码打码](https://www.vaptcha.com/)
+
 
 # NBA
 
