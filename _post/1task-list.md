@@ -36,3 +36,11 @@
 [100%概率获得100万，50%概率获得1亿，你怎么选？](https://view.inews.qq.com/a/20171207A04K3A00)
 
 [Vue2.0+组件库总结](https://www.jianshu.com/p/011d308d7dd7)
+
+[这个github里面有很多canvas的示例](https://github.com/whxaxes)
+
+[JavaScript性能监控器，可以测试webgl代码的渲染性能。](https://github.com/mrdoob/stats.js)
+
+【这段话写的挺好的，来源：https://ssr.vuejs.org/zh/guide/routing.html#代码分割】
+应用程序的代码分割或惰性加载，有助于减少浏览器在初始渲染中下载的资源体积，可以极大地改善大体积 bundle 的可交互时间(TTI - time-to-interactive)。这里的关键在于，对初始首屏而言，"只加载所需"。
+
