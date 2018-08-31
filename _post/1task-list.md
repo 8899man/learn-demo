@@ -44,3 +44,15 @@
 【这段话写的挺好的，来源：https://ssr.vuejs.org/zh/guide/routing.html#代码分割】
 应用程序的代码分割或惰性加载，有助于减少浏览器在初始渲染中下载的资源体积，可以极大地改善大体积 bundle 的可交互时间(TTI - time-to-interactive)。这里的关键在于，对初始首屏而言，"只加载所需"。
 
+
+整理一下这个：[https://www.zhihu.com/question/21757507](https://www.zhihu.com/question/21757507)
+
+https://docschina.org/
+
+https://blog.csdn.net/mooncom/article/details/79087575
+
+[美团点评金融平台Web前端技术体系](https://mp.weixin.qq.com/s?__biz=MjM5NjQ5MTI5OA==&mid=2651747704&idx=2&sn=f2c216c1ca8f364827226f8742eb3a57&pass_ticket=5rFUhlfooXqwFZ%2FYP02DxG7peUY6C8ngQg8QAnbjKRyiC3tBraRU%2BRosmBerVAGz)
+
+[移动端调试痛点？——送你五款前端开发利器](https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&mid=2650587925&idx=1&sn=d52232bcbb37a011635399e4096a136a&pass_ticket=5rFUhlfooXqwFZ%2FYP02DxG7peUY6C8ngQg8QAnbjKRyiC3tBraRU%2BRosmBerVAGz)
+
+[babel](https://zhuanlan.zhihu.com/p/29058936)

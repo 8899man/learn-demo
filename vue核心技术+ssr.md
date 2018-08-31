@@ -1,7 +1,6 @@
 
 # Vue核心技术Vue+Vue-Router+Vuex+SSR实战精讲
 
-
 1、webpack打包图片资源到同一个目录中。
 ```
 {
@@ -688,6 +687,8 @@ store.watch((state) => state.count + 1, (newCount) => {
   console.log(newCount)
 })
 ```
+
+
 
 
 

@@ -3,11 +3,7 @@
 ## 浏览器
 Chrome 有很多实用的小细节，比如地址栏输入 zhihu.com 然后按 tab 建，则直接开启在知乎的搜索
 
-## HTML
 
-一份关于html中`<head>`部分的清单：
-[https://github.com/Amery2010/HEAD](https://github.com/Amery2010/HEAD)
-[https://github.com/joshbuchea/HEAD](https://github.com/joshbuchea/HEAD)
 
 ## CSS
 1、使用css追踪用户是否点击某个链接
