@@ -56,3 +56,9 @@ https://blog.csdn.net/mooncom/article/details/79087575
 [移动端调试痛点？——送你五款前端开发利器](https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&mid=2650587925&idx=1&sn=d52232bcbb37a011635399e4096a136a&pass_ticket=5rFUhlfooXqwFZ%2FYP02DxG7peUY6C8ngQg8QAnbjKRyiC3tBraRU%2BRosmBerVAGz)
 
 [babel](https://zhuanlan.zhihu.com/p/29058936)
+
+[faker.js —— 模拟数据]()
+
+[webpack代码分割](https://webpack.js.org/guides/code-splitting/)
+
+[滴滴WebAPP架构组掘金首页](https://juejin.im/user/59dc483e6fb9a0450e7511b4)

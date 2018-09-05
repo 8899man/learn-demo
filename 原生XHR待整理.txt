@@ -1,0 +1,17 @@
+var xmlHttpReq = null;
+		if(window.ActiveXObject) {
+			xmlHttpReq = new ActiveXObject('Microsoft.XMLHTTP');
+		}else if(window.XMLHttpRequest) {
+			xmlHttpReq = new XMLHttpRequest();
+		}
+		xmlHttpReq.open('GET','/channel/v1/download/geturl?channel_id='+channelId,true);
+		xmlHttpReq.setRequestHeader("X-Afmobi-Client","1.0.1;Android;4.1;zh-CN;Africal/Lagos;3G");
+		xmlHttpReq.onreadystatechange=function(){
+			if(xmlHttpReq.readyState === 4) {
+				if(xmlHttpReq.status === 200) {
+					var obj = JSON.parse(xmlHttpReq.responseText);
+					document.getElementById("download").href=obj["download_url"];
+				}
+			}
+		};
+		xmlHttpReq.send(null);
