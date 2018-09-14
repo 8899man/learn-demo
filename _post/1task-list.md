@@ -62,3 +62,17 @@ https://blog.csdn.net/mooncom/article/details/79087575
 [webpack代码分割](https://webpack.js.org/guides/code-splitting/)
 
 [滴滴WebAPP架构组掘金首页](https://juejin.im/user/59dc483e6fb9a0450e7511b4)
+
+[谷歌字体](http://www.googlefonts.cn/)
+
+[比特虫-制作ico](http://www.bitbug.net/)
+
+【简历】
+[strml.net](https://blog.csdn.net/qq_20264891/article/details/79197651)
++
+[vue+strml.net](https://github.com/ustbhuangyi/resume)
+
+【蚂蚁金服 - 体验技术部 - 数据可视化】
+[https://github.com/antvis](https://github.com/antvis)
+包含f2、g2、g6等等。
+
