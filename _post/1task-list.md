@@ -76,3 +76,11 @@ https://blog.csdn.net/mooncom/article/details/79087575
 [https://github.com/antvis](https://github.com/antvis)
 包含f2、g2、g6等等。
 
+husky
+npm i husky -D
+它会自动在我们项目的 .git 文件里面生成一个 hock 钩子。
+它会读取我们 package.json 里面的一些内容。（比如 scripts 里面的 precommit）
+安装 husky 之前必须先 git init 初始化好项目。
+
+
+
