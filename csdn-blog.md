@@ -14,13 +14,6 @@
 <font color=#42b983 size=3>Github： [https://github.com/Neveryu](https://github.com/Neveryu)</font>
 <font color=#42b983 size=3>新浪微博： [https://weibo.com/Neveryu](https://weibo.com/Neveryu)</font>
 
-![微信](http://img.blog.csdn.net/20170813210420396) 
-  
-<br/>
-
 <font color='red' size='3'>更多学习资源请关注我的新浪微博....</font>
-
-<iframe width="100%" height="500" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=1&ptype=1&speed=0&skin=8&isTitle=1&noborder=1&isWeibo=1&isFans=0&uid=5346488237&verifier=d529ff3a&dpc=1"></iframe>
-<br>
-
 ```
+

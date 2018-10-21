@@ -1,5 +1,9 @@
 【博客整理一个 demo 的栏目，类似于 weblog。】
 
+[如何成为一位函数式编程爱好者-一共6篇文章](http://www.w3cplus.com/javascript/so-you-want-to-be-a-functional-programmer-part-2.html)
+
+[cordova](http://cordova.axuer.com/#getstarted) 使用 HTML CSS JS 进行移动 App 开发。
+
 -5 [黄奕老师的手记](http://www.imooc.com/t/3017249#Article)
 
 -4 https://github.com/aooy/blog/issues/2
@@ -27,13 +31,6 @@
 
 6.[前端验证码打码](https://www.vaptcha.com/)
 
-
-# NBA
-
-德文布克
-[NBA流浪汉凭啥做库里替身？他是阿杜好友高中天才](https://view.inews.qq.com/a/NBA2017120702150503)
-维金斯[从被詹皇抛弃到签1.5亿顶薪 他如何在沉默中爆发？](https://view.inews.qq.com/a/NBA2017120701184805)
-[100%概率获得100万，50%概率获得1亿，你怎么选？](https://view.inews.qq.com/a/20171207A04K3A00)
 
 [Vue2.0+组件库总结](https://www.jianshu.com/p/011d308d7dd7)
 
@@ -82,5 +79,10 @@ npm i husky -D
 它会读取我们 package.json 里面的一些内容。（比如 scripts 里面的 precommit）
 安装 husky 之前必须先 git init 初始化好项目。
 
+【前端加密】
+cypto.js
+aes-js
+
+【await async 了解一下】
 
 

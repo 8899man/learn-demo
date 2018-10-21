@@ -692,6 +692,20 @@ store.watch((state) => state.count + 1, (newCount) => {
 ```
 
 
+# 服务端渲染
+nodemon  -  监听文件变化 重启服务
+concurrently  - 同时起多个服务
+```
+"scripts": {
+  "dev:server": "nodemon server/server.js",
+  "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\""
+}
+```
+
+`npm i vue-meta -S`. vue ssr 的时候如何设置网页 title
+
+
+
 
 
 
