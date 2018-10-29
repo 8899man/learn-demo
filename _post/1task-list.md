@@ -31,6 +31,8 @@
 
 6.[前端验证码打码](https://www.vaptcha.com/)
 
+7.移动端日期选择器，[https://github.com/yuanzm/simple-date-picker/blob/master/bin/datepicker.js](https://github.com/yuanzm/simple-date-picker/blob/master/bin/datepicker.js)，可以考虑实现一下 maxDate 和 minDate。
+
 
 [Vue2.0+组件库总结](https://www.jianshu.com/p/011d308d7dd7)
 
