@@ -87,4 +87,6 @@ aes-js
 
 【await async 了解一下】
 
+【学习 js 原型链，必包】以及【学习[underscore源码](https://underscorejs.org/docs/underscore.html)】以及【学习 [jQuery 源码](https://github.com/chokcoco/jQuery-)】
+
 
