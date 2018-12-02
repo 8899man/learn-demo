@@ -409,5 +409,82 @@ new Vue({
 ## 多个元素的过渡
 当有 **相同标签名** 的元素切换时，需要通过 `key` 特性设置唯一的值来标记以让 Vue 区分它们，否则 Vue 为了效率只会替换相同标签内部的内容。即使在技术上没有必要，给在 `<transition>` 组件中的多个元素设置 key 是一个更好的实践。
 
+----- 20181201 更新 -------
+1、注意这个 `<keep-alive>` 要求被切换到的组件都有自己的名字，不论是通过组件的 name 选项还是局部/全局注册。
+
+2、不同于组件和 prop，事件名不会被用作一个 JavaScript 变量名或属性名，所以就没有理由使用 camelCase 或 PascalCase 了。并且 v-on 事件监听器在 DOM 模板中会被自动转换为全小写 (因为 HTML 是大小写不敏感的)，所以 v-on:myEvent 将会变成 v-on:myevent——导致 myEvent 不可能被监听到。
+
+因此，我们推荐你始终使用 kebab-case 的事件名。
+```
+this.$emit('my-event')
+```
+
+3、异步组件
+Vue 允许你以一个工厂函数的方式定义你的组件，这个工厂函数会异步解析你的组件定义。
+```
+Vue.component('async-example', function (resolve, reject) {
+  setTimeout(function () {
+    // 向 `resolve` 回调传递组件定义
+    resolve({
+      template: '<div>I am async!</div>'
+    })
+  }, 1000)
+})
+```
+
+一个推荐的做法是将异步组件和 webpack 的 code-splitting 功能一起配合使用：
+```
+Vue.component('async-webpack-example', function (resolve) {
+  // 这个特殊的 `require` 语法将会告诉 webpack
+  // 自动将你的构建代码切割成多个包，这些包
+  // 会通过 Ajax 请求加载
+  require(['./my-async-component'], resolve)
+})
+```
+
+你也可以在工厂函数中返回一个 Promise，所以把 webpack 2 和 ES2015 语法加在一起，我们可以写成这样
+```
+Vue.component(
+  'async-webpack-example',
+  // 这个 `import` 函数会返回一个 `Promise` 对象。
+  () => import('./my-async-component')
+)
+```
+
+当使用局部注册的时候，你也可以直接提供一个返回 Promise 的函数：
+```
+new Vue({
+  // ...
+  components: {
+    'my-component': () => import('./my-async-component')
+  }
+})
+```
+
+4、处理加载状态
+> 2.3.0+ 新增
+
+这里的异步组件工厂函数也可以返回一个如下格式的对象：
+```
+const AsyncComponent = () => ({
+  // 需要加载的组件 (应该是一个 `Promise` 对象)
+  component: import('./MyComponent.vue'),
+  // 异步组件加载时使用的组件
+  loading: LoadingComponent,
+  // 加载失败时使用的组件
+  error: ErrorComponent,
+  // 展示加载时组件的延时时间。默认值是 200 (毫秒)
+  delay: 200,
+  // 如果提供了超时时间且组件加载也超时了，
+  // 则使用加载失败时使用的组件。默认值是：`Infinity`
+  timeout: 3000
+})
+```
+
+> 注意如果你希望在 Vue Router 的路由组件中使用上述语法的话，你必须使用 Vue Router 2.4.0+ 版本。
+
+
+
+
 
 
