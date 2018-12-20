@@ -89,4 +89,6 @@ aes-js
 
 【学习 js 原型链，必包】以及【学习[underscore源码](https://underscorejs.org/docs/underscore.html)】以及【学习 [jQuery 源码](https://github.com/chokcoco/jQuery-)】
 
+[极乐技术周报(第八期)](https://zhuanlan.zhihu.com/p/26822986)
+
 
