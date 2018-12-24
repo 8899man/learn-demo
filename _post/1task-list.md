@@ -91,4 +91,7 @@ aes-js
 
 [极乐技术周报(第八期)](https://zhuanlan.zhihu.com/p/26822986)
 
+[小蘑菇小哥的博客](https://github.com/easonyq/easonyq.github.io)，文章质量不错，赞！
+
+
 
